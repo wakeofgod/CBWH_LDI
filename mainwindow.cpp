@@ -295,7 +295,7 @@ void MainWindow::createMotionControl()
 void MainWindow::fileActionSlot1()
 {
     fileDialog = new FileCommandDialog(this);
-    fileDialog->exec();
+    fileDialog->show();
     qDebug()<<QString("void MainWindow::fileActionSlot1");
 }
 
@@ -312,7 +312,7 @@ void MainWindow::fileActionSlot3()
 void MainWindow::cameraSlot1()
 {
     cameraDialog = new CameraSettingDialog(this);
-    cameraDialog->exec();
+    cameraDialog->show();
     qDebug()<<QString("void MainWindow::cameraSlot1");
 }
 

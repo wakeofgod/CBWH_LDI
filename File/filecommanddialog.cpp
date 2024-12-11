@@ -11,6 +11,8 @@ FileCommandDialog::FileCommandDialog(QWidget *parent):QDialog(parent)
 
     QGridLayout *mainLayout = new QGridLayout();
     mainLayout->addWidget(fileGroup,0,0);
+    // mainLayout->setRowStretch(0,1);
+    // mainLayout->setRowStretch(1,1);
     setLayout(mainLayout);
 
     Qt::WindowFlags flags = windowFlags();
@@ -25,6 +27,10 @@ FileCommandDialog::FileCommandDialog(QWidget *parent):QDialog(parent)
     {
         txtExePath->setText(exePath);
     }
+    if(!tifPath.isEmpty())
+    {
+        txtTifPath->setText(tifPath);
+    }
     if(!gerberPath.isEmpty())
     {
         txtGerberPath->setText(gerberPath);
@@ -37,9 +43,11 @@ FileCommandDialog::FileCommandDialog(QWidget *parent):QDialog(parent)
 
     connect(btnClose,&QPushButton::clicked,this,&QDialog::reject);
     connect(btnExeSelect,&QPushButton::clicked,this,&FileCommandDialog::btnExeSelectSlot);
+    connect(btnTifSelect,&QPushButton::clicked,this,&FileCommandDialog::btnTifSelectSlot);
     connect(btnGerberSelect,&QPushButton::clicked,this,&FileCommandDialog::btnGerberSlot);
     connect(btnOutputPath,&QPushButton::clicked,this,&FileCommandDialog::btnOutputSlot);
-    connect(btnPreview,&QPushButton::clicked,this,&FileCommandDialog::btnPerviewSlot);
+    connect(btnPreviewGerber,&QPushButton::clicked,this,&FileCommandDialog::btnPreviewGerberSlot);
+    connect(btnPreviewTif,&QPushButton::clicked,this,&FileCommandDialog::btnPreviewTifSlot);
     connect(btnExecScale,&QPushButton::clicked,this,&FileCommandDialog::btnExecScaleSlot);
     connect(btnExecRotate,&QPushButton::clicked,this,&FileCommandDialog::btnExecRotateSlot);
     connect(btnExportTif,&QPushButton::clicked,this,&FileCommandDialog::btnExprotTifSlot);
@@ -61,15 +69,17 @@ void FileCommandDialog::initWidget()
     txtExePath = new QLineEdit();
     txtExePath->setReadOnly(true);
 
+    btnTifSelect = new QPushButton(tr("选择导出TIF exe路径"));
+    txtTifPath = new QLineEdit();
+    txtTifPath->setReadOnly(true);
+
     btnGerberSelect = new QPushButton(tr("选择gerber文件路径"));
     txtGerberPath = new QLineEdit();
     txtGerberPath->setReadOnly(true);
-    btnPreview = new QPushButton(tr("预览"));
 
     btnOutputPath = new QPushButton(tr("选择导出文件路径"));
     txtOutputPath = new QLineEdit();
     txtOutputPath->setReadOnly(true);
-    btnExportTif = new QPushButton(tr("导出TIF"));
 
     lblScaleSize = new QLabel(tr("缩放大小"));
     txtScaleSize = new QLineEdit();
@@ -84,35 +94,53 @@ void FileCommandDialog::initWidget()
     txtRotationAngle->setValidator(validator);
     btnExecRotate = new QPushButton(tr("执行"));
 
+    btnPreviewGerber = new QPushButton(tr("预览gerber"));
+    btnPreviewTif = new QPushButton(tr("预览tif"));
+    btnExportTif = new QPushButton(tr("导出TIF"));
+
+    lblTifPic = new QLabel();
+
 
     btnClose = new QPushButton(tr("关闭"));
     btnClose->setStyleSheet("QPushButton { background-color: #87CEFA; color: white; font-size: 16px; }");
 
     fLayout->addWidget(btnExeSelect,0,0);
     fLayout->addWidget(txtExePath,0,1);
+    fLayout->addWidget(btnTifSelect,0,2);
+    fLayout->addWidget(txtTifPath,0,3);
+
     fLayout->addWidget(btnGerberSelect,1,0);
     fLayout->addWidget(txtGerberPath,1,1);
-    fLayout->addWidget(btnPreview,1,2);
-    fLayout->addWidget(btnOutputPath,2,0);
-    fLayout->addWidget(btnExportTif,2,2);
-    fLayout->addWidget(txtOutputPath,2,1);
-    fLayout->addWidget(lblScaleSize,3,0);
-    fLayout->addWidget(txtScaleSize,3,1);
-    fLayout->addWidget(btnExecScale,3,2);
-    fLayout->addWidget(lblRotationAngle,4,0);
-    fLayout->addWidget(txtRotationAngle,4,1);
-    fLayout->addWidget(btnExecRotate,4,2);
+    fLayout->addWidget(btnOutputPath,1,2);
+    fLayout->addWidget(txtOutputPath,1,3);
 
-    fLayout->addWidget(btnClose,5,2);
+    fLayout->addWidget(lblScaleSize,2,0);
+    fLayout->addWidget(txtScaleSize,2,1);
+    fLayout->addWidget(btnExecScale,2,2);
 
-    // fLayout->setRowStretch(0,1);
-    // fLayout->setRowStretch(1,1);
-    // fLayout->setRowStretch(2,1);
-    // fLayout->setRowStretch(3,1);
-    // fLayout->setRowStretch(4,1);
+    fLayout->addWidget(lblRotationAngle,3,0);
+    fLayout->addWidget(txtRotationAngle,3,1);
+    fLayout->addWidget(btnExecRotate,3,2);
+
+    fLayout->addWidget(btnPreviewGerber,4,0);
+    fLayout->addWidget(btnPreviewTif,4,1);
+    fLayout->addWidget(btnExportTif,4,2);
+
+    fLayout->addWidget(lblTifPic,5,0,4,4);
+
+    fLayout->addWidget(btnClose,9,3);
+
+    fLayout->setRowStretch(0,1);
+    fLayout->setRowStretch(1,1);
+    fLayout->setRowStretch(2,1);
+    fLayout->setRowStretch(3,1);
+    fLayout->setRowStretch(4,1);
+    fLayout->setRowStretch(5,1);
+
     fLayout->setColumnStretch(0,1);
     fLayout->setColumnStretch(1,1);
     fLayout->setColumnStretch(2,1);
+    fLayout->setColumnStretch(3,1);
     fileGroup->setLayout(fLayout);
 }
 
@@ -140,6 +168,21 @@ void FileCommandDialog::btnExeSelectSlot()
     else
     {
         //qDebug()<<QString("文件为空");
+        msgBox = new FrmMessageBox();
+        msgBox->showFrm("文件为空",2);
+    }
+}
+
+void FileCommandDialog::btnTifSelectSlot()
+{
+    QString folderPath = QFileDialog::getOpenFileName(nullptr, "选择文件", QString(), "所有文件 (*.*)");
+    if (!folderPath.isEmpty())
+    {
+        txtTifPath->setText(folderPath);
+        tifPath = folderPath;
+    }
+    else
+    {
         msgBox = new FrmMessageBox();
         msgBox->showFrm("文件为空",2);
     }
@@ -174,8 +217,22 @@ void FileCommandDialog::btnOutputSlot()
     }
 }
 
-void FileCommandDialog::btnPerviewSlot()
+//预览gerber需要调用第三方exe
+void FileCommandDialog::btnPreviewGerberSlot()
 {
+
+}
+
+//是否是16位图像待验证
+void FileCommandDialog::btnPreviewTifSlot()
+{
+    QDir dir(outputPath);
+    QString tifFilePath = dir.absoluteFilePath(tifName);
+    //QString tifFilePath = "D:/WHLdi_01/16bpc.tiff";
+    QImage image(tifFilePath);
+    QPixmap qpixmap = QPixmap::fromImage(image);
+    qpixmap = qpixmap.scaled(lblTifPic->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    lblTifPic->setPixmap(qpixmap);
 }
 
 void FileCommandDialog::btnExecScaleSlot()
@@ -283,12 +340,11 @@ void FileCommandDialog::btnExecRotateSlot()
 void FileCommandDialog::btnExprotTifSlot()
 {
     QProcess p(0);
-    QString path = "C:\\WCAD\\GBRIP64\\gbr2tiff64.exe";
-    QString command = QDir::toNativeSeparators(path);
+    QString command = QDir::toNativeSeparators(tifPath);
     QStringList args;
 
     //导出文件需要确认
-    args.append(QDir::toNativeSeparators(gerberPath));
+    //args.append(QDir::toNativeSeparators(gerberPath));
     QDir dir(outputPath);
     QString fullPath = dir.filePath(rotateName);
     args.append(QDir::toNativeSeparators(fullPath));

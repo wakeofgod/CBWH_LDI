@@ -24,9 +24,11 @@ public:
 
 public slots:
     void btnExeSelectSlot();
+    void btnTifSelectSlot();
     void btnGerberSlot();
     void btnOutputSlot();
-    void btnPerviewSlot();
+    void btnPreviewGerberSlot();
+    void btnPreviewTifSlot();
     void btnExecScaleSlot();
     void btnExecRotateSlot();
     void btnExprotTifSlot();
@@ -35,20 +37,21 @@ private:
     QGroupBox *fileGroup;
     QPushButton *btnExeSelect;
     QLineEdit *txtExePath;
-    QString exePath = "C:\\wcad\\GBRVU64\\artwork\\gbrunmgr64.exe";
-    //QString exePath = "D:\\testCommand\\test_02.exe";
+    QString exePath = "C:/wcad/GBRVU64/artwork/gbrunmgr64.exe";
     //QString exePath = "D:/testCommand/test_02.exe";
 
 
     QPushButton *btnGerberSelect;
     QLineEdit *txtGerberPath;
-    QPushButton *btnPreview;
     QString gerberPath = "D:/cam/board_cam350.gbr";
 
     QPushButton *btnOutputPath;
     QLineEdit *txtOutputPath;
     QString outputPath = "D:/cam/output";
-    QPushButton *btnExportTif;
+
+    QPushButton *btnTifSelect;
+    QLineEdit *txtTifPath;
+    QString tifPath = "C:/WCAD/GBRIP64/gbr2tiff64.exe";
 
     QLabel *lblScaleSize;
     QLineEdit *txtScaleSize;
@@ -59,6 +62,12 @@ private:
     QLineEdit *txtRotationAngle;
     QPushButton *btnExecRotate;
     double rotateAngle = 0;
+
+    QPushButton *btnPreviewGerber;
+    QPushButton *btnPreviewTif;
+    QPushButton *btnExportTif;
+
+    QLabel *lblTifPic;
 
     QString fileName;
     QString ripName;
