@@ -15,6 +15,14 @@ int main(int argc, char *argv[])
     freopen_s(&dummy, "CONOUT$", "w", stderr);
 #endif
 #endif
+    //加载样式文件
+    QFile file(":/resource/css/blus.css");
+    if(file.open(QFile::ReadOnly))
+    {
+        QString qss = file.readAll();
+        file.close();
+        a.setStyleSheet(qss);
+    }
     MainWindow w;
     //w.show();
     w.showMaximized();

@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Camera/camerasettingdialog.h Camera/camerasettingdialog.cpp
         Common/messageboxdlg.h Common/messageboxdlg.cpp
         Common/frmmessagebox.h Common/frmmessagebox.cpp
+        res.qrc
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET WHLdi_01 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

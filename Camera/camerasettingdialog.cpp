@@ -4,6 +4,7 @@
 CameraSettingDialog::CameraSettingDialog(QWidget *parent):QDialog(parent)
 {
     setWindowTitle(tr("相机初始化"));
+    setObjectName("CameraSettingDialog");
     initWidget();
     QGridLayout *mainLayout = new QGridLayout();
     mainLayout->addWidget(cameraGroup,0,0);
@@ -49,7 +50,7 @@ void CameraSettingDialog::initWidget()
     layout->addWidget(btnCamera2Work,1,2);
 
     btnClose = new QPushButton(tr("关闭"));
-    btnClose->setStyleSheet("QPushButton { background-color: #87CEFA; color: white; font-size: 16px; }");
+    //btnClose->setStyleSheet("QPushButton { background-color: #87CEFA; color: white; font-size: 16px; }");
     layout->addWidget(btnClose,3,3);
 
     layout->setRowStretch(0,1);

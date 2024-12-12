@@ -7,13 +7,16 @@
 FileCommandDialog::FileCommandDialog(QWidget *parent):QDialog(parent)
 {
     setWindowTitle(tr("文件设置"));
+    setObjectName("FileCommandDialog");
     initWidget();
 
     QGridLayout *mainLayout = new QGridLayout();
     mainLayout->addWidget(fileGroup,0,0);
-    // mainLayout->setRowStretch(0,1);
-    // mainLayout->setRowStretch(1,1);
     setLayout(mainLayout);
+    QList<QPushButton*> btnList = findChildren<QPushButton*>();
+    foreach (QPushButton* btn, btnList) {
+        btn->setFocusPolicy(Qt::NoFocus);
+    }
 
     Qt::WindowFlags flags = windowFlags();
     flags &= ~Qt::WindowContextHelpButtonHint;
@@ -102,7 +105,7 @@ void FileCommandDialog::initWidget()
 
 
     btnClose = new QPushButton(tr("关闭"));
-    btnClose->setStyleSheet("QPushButton { background-color: #87CEFA; color: white; font-size: 16px; }");
+    //btnClose->setStyleSheet("QPushButton { background-color: #87CEFA; color: white; font-size: 16px; }");
 
     fLayout->addWidget(btnExeSelect,0,0);
     fLayout->addWidget(txtExePath,0,1);
