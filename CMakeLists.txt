@@ -28,6 +28,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Common/messageboxdlg.h Common/messageboxdlg.cpp
         Common/frmmessagebox.h Common/frmmessagebox.cpp
         res.qrc
+        Motion/motionparadialog.h Motion/motionparadialog.cpp
+        Motion/motioninfodialog.h Motion/motioninfodialog.cpp
+        Motion/motionconnecdialog.h Motion/motionconnecdialog.cpp
+        Motion/axissettingtab.h Motion/axissettingtab.cpp
+        Motion/runinsettingtab.h Motion/runinsettingtab.cpp
+        Motion/comboboxmotiondelegate.h Motion/comboboxmotiondelegate.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET WHLdi_01 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

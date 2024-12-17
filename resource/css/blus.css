@@ -4,6 +4,10 @@ QPalette{background:rgba(193, 219, 246, 255);}
 QMainWindow{
     background:rgba(17, 34, 54, 255);
 }
+QWidget
+{
+    background:rgba(17, 34, 54, 255);
+}
 QWidget#widget_title{
     background:rgba(17, 34, 54, 255);
     min-height: 90px;
@@ -138,7 +142,50 @@ QDialog  QLineEdit:focus, QDialog  QTextEdit:focus, QDialog  QPlainTextEdit:focu
     border: 2px solid rgba(102, 220, 220, 255); /* 聚焦时的边框 */
 }
 
-/* 弹窗背景阴影 */
-QDialog  {
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* 弹窗阴影 */
+/* 设置 QTableView 的样式 */
+QTableView {
+    background: rgba(20, 50, 70, 255); /* 表格背景颜色 */
+    border-radius: 10px; /* 圆角效果 */
+    border: 2px solid rgba(102, 220, 220, 255); /* 表格边框颜色 */
+    color: rgba(193, 219, 246, 255); /* 表格字体颜色 */
+}
+
+/* 设置 QTableView 中每个单元格的样式 */
+QTableView QTableWidgetItem {
+    padding: 5px;
+    border: 1px solid rgba(102, 220, 220, 255); /* 单元格边框颜色 */
+    background-color: rgba(35, 50, 70, 255); /* 单元格背景颜色 */
+}
+
+/* 设置 QTableView 中选中的单元格的样式 */
+QTableView::item:selected {
+    background-color: rgba(35, 86, 103, 255); /* 选中单元格的背景颜色 */
+    color: rgba(255, 255, 255, 255); /* 选中单元格的字体颜色 */
+}
+
+/* 设置 QTableView 的表头样式 */
+QTableView QHeaderView::section {
+    background: rgba(35, 86, 103, 255); /* 表头背景颜色 */
+    color: rgba(193, 219, 246, 255); /* 表头字体颜色 */
+    padding: 5px;
+    border: 1px solid rgba(102, 220, 220, 255); /* 表头边框颜色 */
+}
+
+/* 设置表头的悬停效果 */
+QTableView QHeaderView::section:hover {
+    background-color: rgba(35, 86, 103, 180); /* 表头悬停时的背景颜色 */
+}
+
+/* 设置行与列的选中时的样式 */
+QTableView::item:selected:focus {
+    background-color: rgba(102, 220, 220, 255); /* 聚焦时选中单元格的背景颜色 */
+}
+
+/* 设置空白单元格的背景颜色 */
+QTableView::item:empty {
+    background-color: rgba(20, 50, 70, 255); /* 这里设置空白单元格的背景颜色 */
+}
+
+QTableView::item:alternate {
+    background-color: rgba(30, 70, 90, 255); /* 设置隔行变色背景 */
 }

@@ -15,6 +15,9 @@
 #include <QRadioButton>
 #include "filecommanddialog.h"
 #include "camerasettingdialog.h"
+#include "motionparadialog.h"
+#include "motioninfodialog.h"
+#include "motionconnecdialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -76,11 +79,13 @@ private:
     QGraphicsScene *cameraScene1;
     QGraphicsView *cameraView2;
     QGraphicsScene *cameraScene2;
-    // QGraphicsView *motionView;
-    // QGraphicsScene *motionScene;
 
+    //弹窗
     FileCommandDialog *fileDialog;
     CameraSettingDialog *cameraDialog;
+    MotionParaDialog *motionParaDialog;
+    MotionInfoDialog *motionInfoDialog;
+    MotionConnecDialog *motionConnectDialog;
 
     QGroupBox *motionGroup;
     QLabel *lblAxis;

@@ -61,17 +61,17 @@ void MessageBoxDlg::setMessage(const QString &msg, int type, int closeSec)
     this->lblMessage->setText(msg);
     if(0 == type)
     {
-        this->lblIcon->setStyleSheet("border-image:url(:/images/msg_info.png)");
+        this->lblIcon->setStyleSheet("border-image:url(:/resource/images/msg_info.png)");
         this->lblTitle->setText(tr("提示"));
     }
     else if(1 == type)
     {
-        this->lblIcon->setStyleSheet("border-image:url(:/images/msg_question.png)");
+        this->lblIcon->setStyleSheet("border-image:url(:/resource/images/msg_question.png)");
         this->lblTitle->setText(tr("询问"));
     }
     else if(2 == type)
     {
-        this->lblIcon->setStyleSheet("border-image:url(:/images/msg_error.png)");
+        this->lblIcon->setStyleSheet("border-image:url(:/resource/images/msg_error.png)");
         this->lblTitle->setText(tr("错误"));
     }
 }

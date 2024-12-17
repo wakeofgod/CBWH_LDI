@@ -223,7 +223,11 @@ void FileCommandDialog::btnOutputSlot()
 //预览gerber需要调用第三方exe
 void FileCommandDialog::btnPreviewGerberSlot()
 {
-
+    QProcess p(0);
+    QString previewPath = "C:/wcad/GBRVU64/artwork/gbrvu64.exe";
+    QString command = QDir::toNativeSeparators(previewPath) ;
+    //QStringList args;
+    p.execute(command);
 }
 
 //是否是16位图像待验证
