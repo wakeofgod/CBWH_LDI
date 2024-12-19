@@ -223,19 +223,38 @@ void FileCommandDialog::btnOutputSlot()
 //预览gerber需要调用第三方exe
 void FileCommandDialog::btnPreviewGerberSlot()
 {
-
+    QProcess p(0);
+    QString previewPath = "C:/wcad/GBRVU64/artwork/gbrvu64.exe";
+    QString command = QDir::toNativeSeparators(previewPath) ;
+    //QStringList args;
+    p.execute(command);
 }
 
 //是否是16位图像待验证
 void FileCommandDialog::btnPreviewTifSlot()
 {
-    QDir dir(outputPath);
-    QString tifFilePath = dir.absoluteFilePath(tifName);
-    //QString tifFilePath = "D:/WHLdi_01/16bpc.tiff";
-    QImage image(tifFilePath);
-    QPixmap qpixmap = QPixmap::fromImage(image);
-    qpixmap = qpixmap.scaled(lblTifPic->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
-    lblTifPic->setPixmap(qpixmap);
+    QImageReader::setAllocationLimit(1024);
+
+
+    // QDir dir(outputPath);
+    // QString tifFilePath = dir.absoluteFilePath(tifName);
+    //QString tifFilePath = "D:/16bpc.tiff";
+    QString tifFilePath = "D:/board_cam350_gbr_rip_size_rotate.tiff";
+    QImageReader reader(tifFilePath);
+    QImage image = reader.read();
+    if (image.isNull()) {
+        qDebug()<<QString("FileCommandDialog::btnPreviewTifSlot %1").arg(tifFilePath);
+    }
+    else
+    {
+        QSize targetSize(1920, 1080);  // 缩放到适合屏幕的大小
+        QImage scaledImage = image.scaled(targetSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+        // 创建QPixmap并显示
+        QPixmap qpixmap = QPixmap::fromImage(scaledImage);
+        qpixmap = qpixmap.scaled(lblTifPic->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        lblTifPic->setPixmap(qpixmap);
+    }
 }
 
 void FileCommandDialog::btnExecScaleSlot()

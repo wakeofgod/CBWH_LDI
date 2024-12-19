@@ -74,17 +74,17 @@ void MainWindow::createMenu()
 
     motionToolBar = addToolBar(tr("运动控制"));
     motionToolBar->setToolTip(tr("运动控制"));
-    motionAction1 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("运动设置1"),this,&MainWindow::motionSlot1);
-    action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("运动设置1"),this,&MainWindow::motionSlot1);
-    action->setToolTip(tr("运动设置1"));
+    motionAction1 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("参数设置"),this,&MainWindow::motionSlot1);
+    action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("参数设置"),this,&MainWindow::motionSlot1);
+    action->setToolTip(tr("参数设置"));
 
-    motionAction2 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("运动设置2"),this,&MainWindow::motionSlot2);
-    action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("运动设置2"),this,&MainWindow::motionSlot2);
-    action->setToolTip(tr("运动设置2"));
+    // motionAction2 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器信息"),this,&MainWindow::motionSlot2);
+    // action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器信息"),this,&MainWindow::motionSlot2);
+    // action->setToolTip(tr("控制器信息"));
 
-    motionAction3 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("运动设置3"),this,&MainWindow::motionSlot3);
-    action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("运动设置3"),this,&MainWindow::motionSlot3);
-    action->setToolTip(tr("运动设置3"));
+    // motionAction3 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("通讯参数设置"),this,&MainWindow::motionSlot3);
+    // action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("通讯参数设置"),this,&MainWindow::motionSlot3);
+    // action->setToolTip(tr("通讯参数设置"));
 
     motionToolBar->addSeparator();
 }
@@ -97,12 +97,9 @@ void MainWindow::createCameraWidget()
     cameraScene1 = new QGraphicsScene();
     cameraView2 = new QGraphicsView();
     cameraScene2 = new QGraphicsScene();
-    // motionView = new QGraphicsView();
-    // motionMenu = new QGraphicsScene();
 
     cameraView1->setScene(cameraScene1);
     cameraView2->setScene(cameraScene2);
-    //motionView->setScene(motionScene);
 
 #if 0
     cameraView1->setStyleSheet("border: 2px solid red;");
@@ -113,25 +110,9 @@ void MainWindow::createCameraWidget()
 #endif
     cameraView1->setRenderHint(QPainter::Antialiasing);
     cameraView2->setRenderHint(QPainter::Antialiasing);
-    //motionView->setRenderHint(QPainter::Antialiasing);
 
     viewLayout->addWidget(cameraView1,0,0,1,1);
     viewLayout->addWidget(cameraView2,0,1,1,1);
-    //viewLayout->addWidget(motionView,0,2,1,1);
-
-    // viewLayout->addWidget(cameraView1,0,0,1,4);
-    // viewLayout->addWidget(cameraView2,0,4,1,4);
-    // viewLayout->addWidget(motionView,0,8,1,4);
-
-    // viewLayout->setRowStretch(0,1);
-    // viewLayout->setColumnStretch(0,1);
-    // viewLayout->setColumnStretch(1,1);
-    // viewLayout->setColumnStretch(2,1);
-    // viewLayout->setColumnStretch(3,1);
-    // viewLayout->setColumnStretch(4,1);
-    // viewLayout->setColumnStretch(5,1);
-    // viewLayout->setColumnStretch(6,1);
-    // viewLayout->setColumnStretch(7,1);
 
     viewGroup->setLayout(viewLayout);
     layout->addWidget(viewGroup,0,0,8,4);
@@ -328,15 +309,21 @@ void MainWindow::cameraSlot3()
 
 void MainWindow::motionSlot1()
 {
-    qDebug()<<QString("void MainWindow::motionSlot1");
+    motionParaDialog = new MotionParaDialog();
+    motionParaDialog->show();
+    //qDebug()<<QString("void MainWindow::motionSlot1");
 }
 
 void MainWindow::motionSlot2()
 {
-    qDebug()<<QString("void MainWindow::motionSlot2");
+    motionInfoDialog = new MotionInfoDialog();
+    motionInfoDialog->show();
+    //qDebug()<<QString("void MainWindow::motionSlot2");
 }
 
 void MainWindow::motionSlot3()
 {
-    qDebug()<<QString("void MainWindow::motionSlot3");
+    motionConnectDialog = new MotionConnecDialog();
+    motionConnectDialog->show();
+    //qDebug()<<QString("void MainWindow::motionSlot3");
 }

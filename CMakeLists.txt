@@ -29,6 +29,16 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Common/messageboxdlg.h Common/messageboxdlg.cpp
         Common/frmmessagebox.h Common/frmmessagebox.cpp
         res.qrc
+        Motion/motionparadialog.h Motion/motionparadialog.cpp
+        Motion/motioninfodialog.h Motion/motioninfodialog.cpp
+        Motion/motionconnecdialog.h Motion/motionconnecdialog.cpp
+        Motion/axissettingtab.h Motion/axissettingtab.cpp
+        Motion/runinsettingtab.h Motion/runinsettingtab.cpp
+        Motion/comboboxmotiondelegate.h Motion/comboboxmotiondelegate.cpp
+        Motion/inpudialogmotiondelegate.h Motion/inpudialogmotiondelegate.cpp
+        Motion/iomapinputdialog.h Motion/iomapinputdialog.cpp
+        Motion/inputdigitaldelegate.h Motion/inputdigitaldelegate.cpp
+        ThirdPart/LeiSai/leisai_lib/include/LTSMC.h ThirdPart/LeiSai/leisai_lib/LTSMC.lib
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET WHLdi_01 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -48,11 +58,17 @@ else()
     endif()
 endif()
 
+
+set(LeiSai_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/ThirdPart/LeiSai/leisai_lib/include")
+set(LeiSai_LIBRARY "${CMAKE_SOURCE_DIR}/ThirdPart/LeiSai/leisai_lib/LTSMC.lib")
+target_include_directories( WHLdi_01 PRIVATE ${LeiSai_INCLUDE_DIR})
+
 target_include_directories(WHLdi_01 PRIVATE
     ${CMAKE_SOURCE_DIR}/File
     ${CMAKE_SOURCE_DIR}/Camera
     ${CMAKE_SOURCE_DIR}/Motion
     ${CMAKE_SOURCE_DIR}/Common
+
 )
 target_link_libraries(WHLdi_01 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 

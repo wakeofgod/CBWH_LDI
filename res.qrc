@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>resource/css/blus.css</file>
+        <file>resource/images/msg_error.png</file>
+        <file>resource/images/msg_info.png</file>
+        <file>resource/images/msg_question.png</file>
     </qresource>
 </RCC>
