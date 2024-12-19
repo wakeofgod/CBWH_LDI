@@ -34,6 +34,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Motion/axissettingtab.h Motion/axissettingtab.cpp
         Motion/runinsettingtab.h Motion/runinsettingtab.cpp
         Motion/comboboxmotiondelegate.h Motion/comboboxmotiondelegate.cpp
+        Motion/inpudialogmotiondelegate.h Motion/inpudialogmotiondelegate.cpp
+        Motion/iomapinputdialog.h Motion/iomapinputdialog.cpp
+        Motion/inputdigitaldelegate.h Motion/inputdigitaldelegate.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET WHLdi_01 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

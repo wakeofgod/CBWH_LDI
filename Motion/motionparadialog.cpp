@@ -27,11 +27,12 @@ MotionParaDialog::MotionParaDialog(QWidget *parent):QDialog(parent)
     mainLayout->setRowMinimumHeight(0, 40);  // 设置第一行高度
     setLayout(mainLayout);
 
+    //setWindowFlags(Qt::FramelessWindowHint);
     Qt::WindowFlags flags = windowFlags();
     flags &= ~Qt::WindowContextHelpButtonHint;
     flags |= Qt::MSWindowsFixedSizeDialogHint;
     setWindowFlags(flags);
-    resize(800,600);
+    resize(1000,800);
 }
 
 MotionParaDialog::~MotionParaDialog()

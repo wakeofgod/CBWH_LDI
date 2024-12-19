@@ -10,6 +10,9 @@ class MotionInfoDialog : public QDialog
 public:
    explicit MotionInfoDialog(QWidget *parent = nullptr);
 
+private:
+   QLabel *lblType;
+
 };
 
 #endif // MOTIONINFODIALOG_H

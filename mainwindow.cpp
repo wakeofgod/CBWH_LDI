@@ -78,13 +78,13 @@ void MainWindow::createMenu()
     action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("参数设置"),this,&MainWindow::motionSlot1);
     action->setToolTip(tr("参数设置"));
 
-    motionAction2 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器信息"),this,&MainWindow::motionSlot2);
-    action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器信息"),this,&MainWindow::motionSlot2);
-    action->setToolTip(tr("控制器信息"));
+    // motionAction2 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器信息"),this,&MainWindow::motionSlot2);
+    // action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器信息"),this,&MainWindow::motionSlot2);
+    // action->setToolTip(tr("控制器信息"));
 
-    motionAction3 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("通讯参数设置"),this,&MainWindow::motionSlot3);
-    action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("通讯参数设置"),this,&MainWindow::motionSlot3);
-    action->setToolTip(tr("通讯参数设置"));
+    // motionAction3 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("通讯参数设置"),this,&MainWindow::motionSlot3);
+    // action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("通讯参数设置"),this,&MainWindow::motionSlot3);
+    // action->setToolTip(tr("通讯参数设置"));
 
     motionToolBar->addSeparator();
 }
