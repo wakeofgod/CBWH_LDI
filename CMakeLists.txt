@@ -38,7 +38,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Motion/inpudialogmotiondelegate.h Motion/inpudialogmotiondelegate.cpp
         Motion/iomapinputdialog.h Motion/iomapinputdialog.cpp
         Motion/inputdigitaldelegate.h Motion/inputdigitaldelegate.cpp
-        ThirdPart/LeiSai/leisai_lib/include/LTSMC.h ThirdPart/LeiSai/leisai_lib/LTSMC.lib
+        #ThirdPart/LeiSai/leisai_lib/include/LTSMC.h ThirdPart/LeiSai/leisai_lib/LTSMC.lib
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET WHLdi_01 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
