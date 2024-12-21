@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QDebug>
+#include <LTSMC.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -79,8 +80,8 @@ void MainWindow::createMenu()
     action->setToolTip(tr("参数设置"));
 
     // motionAction2 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器信息"),this,&MainWindow::motionSlot2);
-    // action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器信息"),this,&MainWindow::motionSlot2);
-    // action->setToolTip(tr("控制器信息"));
+    action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("控制器连接"),this,&MainWindow::motionSlot2);
+    action->setToolTip(tr("控制器连接"));
 
     // motionAction3 = motionToolBar->addAction(QIcon::fromTheme("project-development-new-template"),tr("通讯参数设置"),this,&MainWindow::motionSlot3);
     // action = motionMenu->addAction(QIcon::fromTheme("project-development-new-template"),tr("通讯参数设置"),this,&MainWindow::motionSlot3);
@@ -316,9 +317,21 @@ void MainWindow::motionSlot1()
 
 void MainWindow::motionSlot2()
 {
-    motionInfoDialog = new MotionInfoDialog();
-    motionInfoDialog->show();
+    // motionInfoDialog = new MotionInfoDialog();
+    // motionInfoDialog->show();
     //qDebug()<<QString("void MainWindow::motionSlot2");
+    QString ip = "192.168.0.5";
+    QByteArray qb = ip.toLocal8Bit();
+    char* ip_char = qb.data();
+    int ret = smc_board_init(0,2,ip_char,0);
+    if(ret == 0)
+    {
+        qDebug()<<"连接成功";
+    }
+    else
+    {
+        qDebug()<<"连接失败";
+    }
 }
 
 void MainWindow::motionSlot3()
