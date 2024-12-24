@@ -37,7 +37,7 @@ typedef signed   int   int32;
 
 #define __SMC_EXPORTS
 
-//¶¨ÒåÊäÈëºÍÊä³ö
+//å®šä¹‰è¾“å…¥å’Œè¾“å‡º
 #ifdef __SMC_EXPORTS
 	#define SMC_API __declspec(dllexport)
 #else
@@ -49,9 +49,9 @@ extern "C" {
 #endif
 
 /*********************************************************************************************************
-¹¦ÄÜº¯Êı 
+åŠŸèƒ½å‡½æ•° 
 ***********************************************************************************************************/
-//ÍøÂçÁ´½Ó³¬Ê±Ê±¼ä
+//ç½‘ç»œé“¾æ¥è¶…æ—¶æ—¶é—´
 SMC_API short __stdcall smc_set_connect_timeout(DWORD timems);
 SMC_API short __stdcall smc_get_connect_status(WORD ConnectNo);
 SMC_API short __stdcall smc_set_send_recv_timeout(DWORD SendTimems,DWORD RecvTimems);
@@ -77,23 +77,23 @@ SMC_API short __stdcall smc_set_ipaddr( WORD ConnectNo,const char* IpAddr);
 SMC_API short __stdcall smc_get_ipaddr( WORD ConnectNo,char* IpAddr);
 SMC_API short __stdcall smc_set_com(WORD ConnectNo,WORD com, DWORD dwBaudRate, WORD wByteSize, WORD wParity, WORD wStopBits);
 SMC_API short __stdcall smc_get_com(WORD ConnectNo,WORD com, DWORD* dwBaudRate, WORD* wByteSize, WORD* wParity, WORD*dwStopBits);
-//¶ÁĞ´ĞòÁĞºÅ£¬¿É½«¿ØÖÆÆ÷±êÇ©ÉÏµÄĞòÁĞºÅ»òÕß¿Í»§×Ô¶¨ÒåµÄĞòÁĞºÅĞ´Èë¿ØÖÆÆ÷£¬¶Ïµç±£´æ
+//è¯»å†™åºåˆ—å·ï¼Œå¯å°†æ§åˆ¶å™¨æ ‡ç­¾ä¸Šçš„åºåˆ—å·æˆ–è€…å®¢æˆ·è‡ªå®šä¹‰çš„åºåˆ—å·å†™å…¥æ§åˆ¶å™¨ï¼Œæ–­ç”µä¿å­˜
 SMC_API short __stdcall smc_write_sn(WORD ConnectNo, uint64 sn);
 SMC_API short __stdcall smc_read_sn(WORD ConnectNo, uint64* sn);
-SMC_API short __stdcall smc_write_sn_numstring(WORD ConnectNo, const char* sn_str);//sn_str 16½øÖÆ×Ö·û´® ¹Ì¶¨16¸ö×Ö·û
+SMC_API short __stdcall smc_write_sn_numstring(WORD ConnectNo, const char* sn_str);//sn_str 16è¿›åˆ¶å­—ç¬¦ä¸² å›ºå®š16ä¸ªå­—ç¬¦
 SMC_API short __stdcall smc_read_sn_numstring(WORD ConnectNo, char* sn_str);
-//¿Í»§×Ô¶¨ÒåÃÜÂë×Ö·û´®£¬×î´ó256¸ö×Ö·û£¬¿ÉÍ¨¹ı´ËÃÜÂëÓĞĞ§±£»¤¿Í»§Ó¦ÓÃ³ÌĞò
+//å®¢æˆ·è‡ªå®šä¹‰å¯†ç å­—ç¬¦ä¸²ï¼Œæœ€å¤§256ä¸ªå­—ç¬¦ï¼Œå¯é€šè¿‡æ­¤å¯†ç æœ‰æ•ˆä¿æŠ¤å®¢æˆ·åº”ç”¨ç¨‹åº
 SMC_API short __stdcall smc_write_password(WORD ConnectNo, const char * str_pass);
 SMC_API short __stdcall smc_check_password(WORD ConnectNo, const char * str_pass);
-//µÇÈëÓëĞŞ¸ÄÃÜÂë£¬¸ÃÃÜÂëÓÃ×÷ÏŞÖÆ¿ØÖÆÆ÷»Ö¸´³ö³§ÉèÖÃÒÔ¼°ÉÏ´«BASIC³ÌĞòÊ¹ÓÃ
+//ç™»å…¥ä¸ä¿®æ”¹å¯†ç ï¼Œè¯¥å¯†ç ç”¨ä½œé™åˆ¶æ§åˆ¶å™¨æ¢å¤å‡ºå‚è®¾ç½®ä»¥åŠä¸Šä¼ BASICç¨‹åºä½¿ç”¨
 SMC_API short __stdcall smc_enter_password(WORD ConnectNo, const char * str_pass);
 SMC_API short __stdcall smc_modify_password(WORD ConnectNo, const char* spassold, const char* spass);
 
-//²ÎÊıÎÄ¼ş²Ù×÷
+//å‚æ•°æ–‡ä»¶æ“ä½œ
 SMC_API short __stdcall smc_download_parafile(WORD ConnectNo,const char *FileName);
 SMC_API short __stdcall smc_upload_parafile(WORD ConnectNo,const char *FileName);
 /*********************************************************************************************************
-°²È«»úÖÆ²ÎÊı
+å®‰å…¨æœºåˆ¶å‚æ•°
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_el_mode(WORD ConnectNo,WORD axis,WORD enable,WORD el_logic,WORD el_mode);
 SMC_API short __stdcall smc_get_el_mode(WORD ConnectNo,WORD axis,WORD *enable,WORD *el_logic,WORD *el_mode);
@@ -102,7 +102,7 @@ SMC_API short __stdcall smc_get_emg_mode(WORD ConnectNo,WORD axis,WORD *enable,W
 SMC_API short __stdcall smc_set_softlimit_unit(WORD ConnectNo,WORD axis,WORD enable, WORD source_sel,WORD SL_action, double N_limit,double P_limit);
 SMC_API short __stdcall smc_get_softlimit_unit(WORD ConnectNo,WORD axis,WORD *enable, WORD *source_sel,WORD *SL_action,double *N_limit,double *P_limit);
 /*********************************************************************************************************
-µ¥ÖáÌØÊâ¹¦ÄÜ²ÎÊı
+å•è½´ç‰¹æ®ŠåŠŸèƒ½å‚æ•°
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_pulse_outmode(WORD ConnectNo,WORD axis,WORD outmode);
 SMC_API short __stdcall smc_get_pulse_outmode(WORD ConnectNo,WORD axis,WORD* outmode);
@@ -110,11 +110,11 @@ SMC_API short __stdcall smc_set_equiv(WORD ConnectNo,WORD axis, double equiv);
 SMC_API short __stdcall smc_get_equiv(WORD ConnectNo,WORD axis, double *equiv);
 SMC_API short __stdcall smc_set_backlash_unit(WORD ConnectNo,WORD axis,double backlash);
 SMC_API short __stdcall smc_get_backlash_unit(WORD ConnectNo,WORD axis,double *backlash);
-//ÖáIOÓ³Éä
+//è½´IOæ˜ å°„
 SMC_API short __stdcall smc_set_axis_io_map(WORD ConnectNo,WORD Axis,WORD IoType,WORD MapIoType,WORD MapIoIndex,double Filter);
 SMC_API short __stdcall smc_get_axis_io_map(WORD ConnectNo,WORD Axis,WORD IoType,WORD* MapIoType,WORD* MapIoIndex,double* Filter);
 /*********************************************************************************************************
-µ¥ÖáËÙ¶È²ÎÊı
+å•è½´é€Ÿåº¦å‚æ•°
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_profile_unit(WORD ConnectNo,WORD axis,double Min_Vel,double Max_Vel,double Tacc,double Tdec,double Stop_Vel);
 SMC_API short __stdcall smc_get_profile_unit(WORD ConnectNo,WORD axis,double* Min_Vel,double* Max_Vel,double* Tacc,double* Tdec,double* Stop_Vel);
@@ -125,22 +125,22 @@ SMC_API short __stdcall smc_get_s_profile(WORD ConnectNo,WORD axis,WORD s_mode,d
 SMC_API short __stdcall smc_set_dec_stop_time(WORD ConnectNo,WORD axis,double time);
 SMC_API short __stdcall smc_get_dec_stop_time(WORD ConnectNo,WORD axis,double *time); 
 /*********************************************************************************************************
-µ¥ÖáÔË¶¯
+å•è½´è¿åŠ¨
 *********************************************************************************************************/
 SMC_API short __stdcall smc_pmove_unit(WORD ConnectNo,WORD axis,double Dist,WORD posi_mode);
 SMC_API short __stdcall smc_vmove(WORD ConnectNo,WORD axis,WORD dir);
 SMC_API short __stdcall smc_change_speed_unit(WORD ConnectNo,WORD axis, double New_Vel,double Taccdec);
 SMC_API short __stdcall smc_reset_target_position_unit(WORD ConnectNo,WORD axis, double New_Pos);
 SMC_API short __stdcall smc_update_target_position_unit(WORD ConnectNo,WORD axis, double New_Pos);
-//Èí×ÅÂ½¹¦ÄÜ
+//è½¯ç€é™†åŠŸèƒ½
 SMC_API short __stdcall smc_pmove_unit_extern(WORD ConnectNo, WORD axis, double MidPos,double TargetPos, double Min_Vel,double Max_Vel, double stop_Vel, double acc,double dec,double smooth_time,WORD posi_mode);
 
-//ÕıÏÒÇúÏß¶¨³¤ÔË¶¯
+//æ­£å¼¦æ›²çº¿å®šé•¿è¿åŠ¨
 SMC_API short __stdcall smc_set_plan_mode(WORD ConnectNo,WORD axis,WORD mode);
 SMC_API short __stdcall smc_get_plan_mode(WORD ConnectNo,WORD axis,WORD *mode);
 SMC_API short __stdcall smc_pmove_sin_unit(WORD ConnectNo,WORD axis,double Dist,WORD posi_mode,double MaxVel,double MaxAcc);
 
-//¸ßËÙIO´¥·¢ÔÚÏß±äËÙ±äÎ»ÖÃ
+//é«˜é€ŸIOè§¦å‘åœ¨çº¿å˜é€Ÿå˜ä½ç½®
 SMC_API short __stdcall smc_pmove_change_pos_speed_config(WORD ConnectNo,WORD axis,double tar_vel, double tar_rel_pos, WORD trig_mode, WORD source);
 SMC_API short __stdcall smc_get_pmove_change_pos_speed_config(WORD ConnectNo,WORD axis,double* tar_vel, double* tar_rel_pos, WORD* trig_mode, WORD* source);
 SMC_API short __stdcall smc_pmove_change_pos_speed_enable(WORD ConnectNo,WORD axis, WORD enable);
@@ -148,7 +148,7 @@ SMC_API short __stdcall smc_get_pmove_change_pos_speed_enable(WORD ConnectNo,WOR
 SMC_API short __stdcall smc_get_pmove_change_pos_speed_state(WORD ConnectNo,WORD axis, WORD * trig_num, double * trig_pos);
 
 /*********************************************************************************************************
-»ØÁãÔË¶¯
+å›é›¶è¿åŠ¨
 *********************************************************************************************************/	
 SMC_API short __stdcall smc_set_home_pin_logic(WORD ConnectNo,WORD axis,WORD org_logic,double filter);
 SMC_API short __stdcall smc_get_home_pin_logic(WORD ConnectNo,WORD axis,WORD *org_logic,double *filter);
@@ -161,16 +161,16 @@ SMC_API short __stdcall smc_get_homespeed_unit(WORD ConnectNo,WORD axis, double 
 SMC_API short __stdcall smc_set_home_profile_unit(WORD ConnectNo,WORD axis,double Low_Vel,double High_Vel,double Tacc,double Tdec);
 SMC_API short __stdcall smc_get_home_profile_unit(WORD ConnectNo,WORD axis,double* Low_Vel,double* High_Vel,double* Tacc,double* Tdec);
 
-//ÏŞÎ»µ±Ô­µãÇĞ»»£¬mode£º0-Ä¬ÈÏÔ­µã£¬1-ÕıÏŞÎ»µ±Ô­µã£¬2-¸ºÏŞÎ»µ±Ô­µã
+//é™ä½å½“åŸç‚¹åˆ‡æ¢ï¼Œmodeï¼š0-é»˜è®¤åŸç‚¹ï¼Œ1-æ­£é™ä½å½“åŸç‚¹ï¼Œ2-è´Ÿé™ä½å½“åŸç‚¹
 SMC_API short __stdcall smc_set_el_home(WORD ConnectNo,WORD axis,WORD mode);
-//20151017»ØÁãÍê³ÉºóÉèÖÃÎ»ÖÃ
+//20151017å›é›¶å®Œæˆåè®¾ç½®ä½ç½®
 SMC_API short __stdcall smc_set_home_position_unit(WORD ConnectNo,WORD axis,WORD enable,double position);
 SMC_API short __stdcall smc_get_home_position_unit(WORD ConnectNo,WORD axis,WORD *enable,double *position);
 SMC_API short __stdcall smc_home_move(WORD ConnectNo,WORD axis);
-//»ØÔ­µã×´Ì¬£¬state£º0-Î´Íê³É£¬1-Íê³É
+//å›åŸç‚¹çŠ¶æ€ï¼Œstateï¼š0-æœªå®Œæˆï¼Œ1-å®Œæˆ
 SMC_API short __stdcall smc_get_home_result(WORD ConnectNo,WORD axis,WORD* state);
 /*********************************************************************************************************
-PVTÔË¶¯
+PVTè¿åŠ¨
 *********************************************************************************************************/
 SMC_API short __stdcall smc_pvt_table_unit(WORD ConnectNo,WORD iaxis,DWORD count,double *pTime,double *pPos,double *pVel);
 SMC_API short __stdcall smc_pts_table_unit(WORD ConnectNo,WORD iaxis,DWORD count,double *pTime,double *pPos,double *pPercent);
@@ -178,20 +178,20 @@ SMC_API short __stdcall smc_pvts_table_unit(WORD ConnectNo,WORD iaxis,DWORD coun
 SMC_API short __stdcall smc_ptt_table_unit(WORD ConnectNo,WORD iaxis,DWORD count,double *pTime,double *pPos);
 SMC_API short __stdcall smc_pvt_move(WORD ConnectNo,WORD AxisNum,WORD* AxisList);
 /*********************************************************************************************************
-¼òÒ×µç×ÓÍ¹ÂÖÔË¶¯
+ç®€æ˜“ç”µå­å‡¸è½®è¿åŠ¨
 *********************************************************************************************************/
 SMC_API short __stdcall smc_cam_table_unit(WORD ConnectNo,WORD MasterAxisNo,WORD SlaveAxisNo,DWORD Count,double *pMasterPos,double *pSlavePos,WORD SrcMode);
 SMC_API short __stdcall smc_cam_move(WORD ConnectNo,WORD AxisNo);
 SMC_API short __stdcall smc_cam_move_cycle(WORD ConnectNo,WORD AxisNo);
 /*********************************************************************************************************
-ÕıÏÒÕñµ´ÔË¶¯
+æ­£å¼¦æŒ¯è¡è¿åŠ¨
 *********************************************************************************************************/
 SMC_API short __stdcall smc_sine_oscillate_set_mode(WORD ConnectNo,WORD Axis,WORD mode);
 SMC_API short __stdcall smc_sine_oscillate_unit(WORD ConnectNo,WORD Axis,double Amplitude,double Frequency);
 SMC_API short __stdcall smc_sine_oscillate_stop(WORD ConnectNo,WORD Axis);
 
 /*********************************************************************************************************
-ÊÖÂÖÔË¶¯
+æ‰‹è½®è¿åŠ¨
 *********************************************************************************************************/
 SMC_API short __stdcall smc_handwheel_set_axislist( WORD ConnectNo, WORD AxisSelIndex,WORD AxisNum,WORD* AxisList	);
 SMC_API short __stdcall smc_handwheel_get_axislist( WORD ConnectNo,WORD AxisSelIndex, WORD* AxisNum, WORD* AxisList);
@@ -208,19 +208,19 @@ SMC_API short __stdcall smc_handwheel_set_emg_logic( WORD ConnectNo, WORD emg_lo
 SMC_API short __stdcall smc_handwheel_get_emg_logic( WORD ConnectNo, WORD * emg_logic);
 
 SMC_API short __stdcall smc_handwheel_get_input( WORD ConnectNo, WORD * axis_sel_input,WORD * ratio_sel_input,WORD *emg_input);
-//20190917 Ôö¼Ó¼æÈİE3032¿ØÖÆ¿¨µÄÊÖÂÖº¯Êı,¶àÖáÊÖÂÖÔİÊ±Ö»Ö§³ÖÍ¬Ò»±¶ÂÊ
+//20190917 å¢åŠ å…¼å®¹E3032æ§åˆ¶å¡çš„æ‰‹è½®å‡½æ•°,å¤šè½´æ‰‹è½®æš‚æ—¶åªæ”¯æŒåŒä¸€å€ç‡
 SMC_API short __stdcall smc_set_handwheel_inmode(WORD ConnectNo,WORD axis,WORD inmode,long multi,double vh);
 SMC_API short __stdcall smc_get_handwheel_inmode(WORD ConnectNo,WORD axis,WORD *inmode,long *multi,double *vh);
 SMC_API short __stdcall smc_set_handwheel_inmode_extern(WORD ConnectNo,WORD inmode,WORD AxisNum,WORD* AxisList,int* multi);
 SMC_API short __stdcall smc_get_handwheel_inmode_extern(WORD ConnectNo,WORD* inmode,WORD* AxisNum,WORD* AxisList,int *multi);
-//Ö§³Ö¸¡µã±¶ÂÊ
+//æ”¯æŒæµ®ç‚¹å€ç‡
 SMC_API short __stdcall smc_set_handwheel_inmode_decimals(WORD ConnectNo,WORD axis,WORD inmode,double multi,double vh);
 SMC_API short __stdcall smc_get_handwheel_inmode_decimals(WORD ConnectNo,WORD axis,WORD *inmode,double *multi,double *vh);
 SMC_API short __stdcall smc_set_handwheel_inmode_extern_decimals(WORD ConnectNo,WORD inmode,WORD AxisNum,WORD* AxisList,double* multi);
 SMC_API short __stdcall smc_get_handwheel_inmode_extern_decimals(WORD ConnectNo,WORD* inmode,WORD* AxisNum,WORD* AxisList,double *multi);
 
 /*********************************************************************************************************
-¶àÖá²å²¹ËÙ¶È²ÎÊıÉèÖÃ
+å¤šè½´æ’è¡¥é€Ÿåº¦å‚æ•°è®¾ç½®
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_vector_profile_unit(WORD ConnectNo,WORD Crd,double Min_Vel,double Max_Vel,double Tacc,double Tdec,double Stop_Vel);
 SMC_API short __stdcall smc_get_vector_profile_unit(WORD ConnectNo,WORD Crd,double* Min_Vel,double* Max_Vel,double* Tacc,double* Tdec,double* Stop_Vel);
@@ -231,7 +231,7 @@ SMC_API short __stdcall smc_get_vector_s_profile(WORD ConnectNo,WORD Crd,WORD s_
 SMC_API short __stdcall smc_set_vector_dec_stop_time(WORD ConnectNo,WORD Crd,double time);
 SMC_API short __stdcall smc_get_vector_dec_stop_time(WORD ConnectNo,WORD Crd,double *time);
 /*********************************************************************************************************
-¶àÖáµ¥¶Î²å²¹ÔË¶¯
+å¤šè½´å•æ®µæ’è¡¥è¿åŠ¨
 *********************************************************************************************************/
 SMC_API short __stdcall smc_line_unit(WORD ConnectNo,WORD Crd,WORD AxisNum,WORD* AxisList,double* Dist,WORD posi_mode);
 SMC_API short __stdcall smc_arc_move_center_unit(WORD ConnectNo,WORD Crd,WORD AxisNum,WORD* AxisList,double *Target_Pos,double *Cen_Pos,WORD Arc_Dir,long Circle,WORD posi_mode);
@@ -241,27 +241,27 @@ SMC_API short __stdcall smc_arc_move_angle_unit(WORD ConnectNo,WORD Crd,WORD Axi
 SMC_API short __stdcall smc_arc_move_center_angle_unit(WORD ConnectNo,WORD Crd,WORD AxisNum,WORD* AxisList,double *Target_Pos,double *Cen_Pos,double Angle, WORD Arc_Dir,long Circle, WORD posi_mode);
 SMC_API short __stdcall smc_circle_move_center_unit(WORD ConnectNo,WORD Crd,WORD AxisNum,WORD* AxisList,double *Target_Pos,double *Cen_Pos,WORD Arc_Dir,long Circle,WORD posi_mode);
 /*********************************************************************************************************
-¶àÖáÁ¬Ğø²å²¹ÔË¶¯
+å¤šè½´è¿ç»­æ’è¡¥è¿åŠ¨
 *********************************************************************************************************/
-//Ğ¡Ïß¶ÎÇ°Õ°
+//å°çº¿æ®µå‰ç»
 SMC_API short __stdcall smc_conti_set_lookahead_mode(WORD ConnectNo,WORD Crd,WORD enable,long LookaheadSegments,double PathError,double LookaheadAcc);
 SMC_API short __stdcall smc_conti_get_lookahead_mode(WORD ConnectNo,WORD Crd,WORD* enable,long* LookaheadSegments,double* PathError,double* LookaheadAcc);
-//Ô²»¡ÏŞËÙ
+//åœ†å¼§é™é€Ÿ
 SMC_API short __stdcall smc_set_arc_limit(WORD ConnectNo,WORD Crd,WORD Enable,double MaxCenAcc=0,double MaxArcError=0);
 SMC_API short __stdcall smc_get_arc_limit(WORD ConnectNo,WORD Crd,WORD* Enable,double* MaxCenAcc=NULL,double* MaxArcError=NULL);
 
-//Á¬Ğø²å²¹¿ØÖÆ
+//è¿ç»­æ’è¡¥æ§åˆ¶
 SMC_API short __stdcall smc_conti_open_list (WORD ConnectNo,WORD Crd,WORD AxisNum,WORD *AxisList);
 SMC_API short __stdcall smc_conti_close_list(WORD ConnectNo,WORD Crd);
 SMC_API short __stdcall smc_conti_stop_list (WORD ConnectNo,WORD Crd,WORD stop_mode);
 SMC_API short __stdcall smc_conti_pause_list(WORD ConnectNo,WORD Crd);
 SMC_API short __stdcall smc_conti_start_list(WORD ConnectNo,WORD Crd);
 SMC_API short __stdcall smc_conti_change_speed_ratio (WORD ConnectNo,WORD Crd,double percent);
-//Á¬Ğø²å²¹×´Ì¬
+//è¿ç»­æ’è¡¥çŠ¶æ€
 SMC_API short __stdcall smc_conti_get_run_state(WORD ConnectNo,WORD Crd);
 SMC_API long __stdcall smc_conti_remain_space (WORD ConnectNo,WORD Crd);
 SMC_API long __stdcall smc_conti_read_current_mark (WORD ConnectNo,WORD Crd);
-//Á¬Ğø²å²¹¹ì¼£¶Î
+//è¿ç»­æ’è¡¥è½¨è¿¹æ®µ
 SMC_API short __stdcall smc_conti_line_unit(WORD ConnectNo,WORD Crd,WORD AxisNum,WORD* AxisList,double* pPosList,WORD posi_mode,long mark);
 SMC_API short __stdcall smc_conti_arc_move_center_unit(WORD ConnectNo,WORD Crd,WORD AxisNum,WORD* AxisList,double *Target_Pos,double *Cen_Pos,WORD Arc_Dir,long Circle,WORD posi_mode,long mark);
 SMC_API short __stdcall smc_conti_arc_move_radius_unit(WORD ConnectNo,WORD Crd,WORD AxisNum,WORD* AxisList,double *Target_Pos,double Arc_Radius,WORD Arc_Dir,long Circle,WORD posi_mode,long mark);
@@ -269,7 +269,7 @@ SMC_API short __stdcall smc_conti_arc_move_3points_unit(WORD ConnectNo,WORD Crd,
 SMC_API short __stdcall smc_conti_arc_move_angle_unit(WORD ConnectNo, WORD Crd, WORD AxisNum, WORD* AxisList, double *Cen_Pos, double Angle,double *Target_Pos,WORD posi_mode,long mark);
 SMC_API short __stdcall smc_conti_arc_move_center_angle_unit(WORD ConnectNo,WORD Crd,WORD AxisNum,WORD* AxisList,double *Target_Pos,double *Cen_Pos,double Angle, WORD Arc_Dir,long Circle, WORD posi_mode,long mark);
 SMC_API short __stdcall smc_conti_circle_move_angle_unit(WORD ConnectNo, WORD Crd, WORD AxisNum, WORD* AxisList, double *Cen_Pos, double Angle,double *Target_Pos,WORD posi_mode,long mark);
-//Á¬Ğø²å²¹IO¹¦ÄÜ
+//è¿ç»­æ’è¡¥IOåŠŸèƒ½
 SMC_API short __stdcall smc_conti_wait_input(WORD ConnectNo,WORD Crd,WORD bitno,WORD on_off,double TimeOut,long mark);
 SMC_API short __stdcall smc_conti_delay_outbit_to_start(WORD ConnectNo, WORD Crd, WORD bitno,WORD on_off,double delay_value,WORD delay_mode,double ReverseTime);
 SMC_API short __stdcall smc_conti_delay_outbit_to_stop(WORD ConnectNo, WORD Crd, WORD bitno,WORD on_off,double delay_time,double ReverseTime);
@@ -279,7 +279,7 @@ SMC_API short __stdcall smc_conti_write_outbit(WORD ConnectNo, WORD Crd, WORD bi
 SMC_API short __stdcall smc_conti_clear_io_action(WORD ConnectNo, WORD Crd, DWORD Io_Mask);
 SMC_API short __stdcall smc_conti_set_pause_output(WORD ConnectNo,WORD Crd,WORD action,long mask,long state);
 SMC_API short __stdcall smc_conti_get_pause_output(WORD ConnectNo,WORD Crd,WORD* action,long* mask,long* state);
-//Á¬Ğø²å²¹ÌØÊâ¹¦ÄÜ
+//è¿ç»­æ’è¡¥ç‰¹æ®ŠåŠŸèƒ½
 SMC_API short __stdcall smc_conti_set_override(WORD ConnectNo,WORD Crd,double Percent);
 SMC_API short __stdcall smc_conti_set_blend(WORD ConnectNo,WORD Crd,WORD enable);
 SMC_API short __stdcall smc_conti_get_blend(WORD ConnectNo,WORD Crd,WORD* enable);
@@ -287,23 +287,23 @@ SMC_API short __stdcall smc_conti_pmove_unit(WORD ConnectNo,WORD Crd,WORD axis,d
 SMC_API short __stdcall smc_conti_delay(WORD ConnectNo, WORD Crd,double delay_time,long mark);
 
 /*********************************************************************************************************
-PWM¹¦ÄÜ
+PWMåŠŸèƒ½
 *********************************************************************************************************/
-//ÓëIO¸´ÓÃµÄÇé¿öÏÂÊ¹ÓÃ
+//ä¸IOå¤ç”¨çš„æƒ…å†µä¸‹ä½¿ç”¨
 SMC_API short __stdcall smc_set_pwm_enable(WORD ConnectNo,WORD pwmno,WORD enable);
 SMC_API short __stdcall smc_get_pwm_enable(WORD ConnectNo,WORD pwmno,WORD* enable);
 SMC_API short __stdcall smc_set_pwm_output(WORD ConnectNo, WORD pwmno,double fDuty, double fFre);
 SMC_API short __stdcall smc_get_pwm_output(WORD ConnectNo,WORD pwmno,double* fDuty, double* fFre);
 SMC_API short __stdcall smc_conti_set_pwm_output(WORD ConnectNo,WORD Crd, WORD pwmno,double fDuty, double fFre);
-/**********PWMËÙ¶È¸úËæ***********************************************************************************
-mode:¸úËæÄ£Ê½0-²»¸úËæ ±£³Ö×´Ì¬ 1-²»¸úËæ Êä³öµÍµçÆ½2-²»¸úËæ Êä³ö¸ßµçÆ½3-¸úËæ Õ¼¿Õ±È×Ô¶¯µ÷Õû4-¸úËæ ÆµÂÊ×Ô¶¯µ÷Õû
-MaxVel:×î´óÔËĞĞËÙ¶È£¬µ¥Î»unit
-MaxValue:×î´óÊä³öÕ¼¿Õ±È»òÕßÆµÂÊ
-OutValue£ºÉèÖÃÊä³öÆµÂÊ»òÕ¼¿Õ±È
+/**********PWMé€Ÿåº¦è·Ÿéš***********************************************************************************
+mode:è·Ÿéšæ¨¡å¼0-ä¸è·Ÿéš ä¿æŒçŠ¶æ€ 1-ä¸è·Ÿéš è¾“å‡ºä½ç”µå¹³2-ä¸è·Ÿéš è¾“å‡ºé«˜ç”µå¹³3-è·Ÿéš å ç©ºæ¯”è‡ªåŠ¨è°ƒæ•´4-è·Ÿéš é¢‘ç‡è‡ªåŠ¨è°ƒæ•´
+MaxVel:æœ€å¤§è¿è¡Œé€Ÿåº¦ï¼Œå•ä½unit
+MaxValue:æœ€å¤§è¾“å‡ºå ç©ºæ¯”æˆ–è€…é¢‘ç‡
+OutValueï¼šè®¾ç½®è¾“å‡ºé¢‘ç‡æˆ–å ç©ºæ¯”
 *******************************************************************************************************/
 SMC_API short __stdcall smc_set_pwm_follow_speed(WORD ConnectNo,WORD pwmno,WORD mode,double MaxVel,double MaxValue,double OutValue);
 SMC_API short __stdcall smc_get_pwm_follow_speed(WORD ConnectNo,WORD pwmno,WORD* mode,double* MaxVel,double* MaxValue,double* OutValue);
-//ÉèÖÃPWM¿ª¹Ø¶ÔÓ¦µÄÕ¼¿Õ±È
+//è®¾ç½®PWMå¼€å…³å¯¹åº”çš„å ç©ºæ¯”
 SMC_API short __stdcall smc_set_pwm_onoff_duty(WORD ConnectNo, WORD pwmno,double fOnDuty, double fOffDuty);
 SMC_API short __stdcall smc_get_pwm_onoff_duty(WORD ConnectNo, WORD pwmno,double* fOnDuty, double* fOffDuty);
 
@@ -315,12 +315,12 @@ SMC_API short __stdcall smc_conti_ahead_pwm_to_stop(WORD ConnectNo, WORD Crd, WO
 SMC_API short __stdcall smc_conti_write_pwm(WORD ConnectNo, WORD Crd, WORD pwmno,WORD on_off,double ReverseTime);
 
 /*********************************************************************************************************
-SMC106A¶¨ÖÆ¹¦ÄÜ
+SMC106Aå®šåˆ¶åŠŸèƒ½
 *********************************************************************************************************/
 SMC_API short __stdcall smc_laser_set_output(WORD ConnectNo,WORD Enable,WORD Width);
 SMC_API short __stdcall smc_laser_get_output(WORD ConnectNo,WORD* Enable,WORD* Width);
 /*********************************************************************************************************
-±àÂëÆ÷¹¦ÄÜ
+ç¼–ç å™¨åŠŸèƒ½
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_counter_inmode(WORD ConnectNo,WORD axis,WORD mode);
 SMC_API short __stdcall smc_get_counter_inmode(WORD ConnectNo,WORD axis,WORD *mode);
@@ -329,14 +329,14 @@ SMC_API short __stdcall smc_get_counter_reverse(WORD ConnectNo,WORD axis,WORD *r
 SMC_API short __stdcall smc_set_encoder_unit(WORD ConnectNo,WORD axis, double pos);
 SMC_API short __stdcall smc_get_encoder_unit(WORD ConnectNo,WORD axis, double * pos);
 /*********************************************************************************************************
-¸¨Öú±àÂëÆ÷¹¦ÄÜ
+è¾…åŠ©ç¼–ç å™¨åŠŸèƒ½
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_extra_encoder_mode(WORD ConnectNo,WORD channel,WORD inmode,WORD multi);
 SMC_API short __stdcall smc_get_extra_encoder_mode(WORD ConnectNo,WORD channel,WORD* inmode,WORD * multi);
 SMC_API short __stdcall smc_set_extra_encoder(WORD ConnectNo,WORD channel, int pos);
 SMC_API short __stdcall smc_get_extra_encoder(WORD ConnectNo,WORD channel, int * pos);
 /*********************************************************************************************************
-Í¨ÓÃIO²Ù×÷
+é€šç”¨IOæ“ä½œ
 *********************************************************************************************************/	
 SMC_API short __stdcall smc_read_inbit(WORD ConnectNo,WORD bitno);
 SMC_API short __stdcall smc_write_outbit(WORD ConnectNo,WORD bitno,WORD on_off);
@@ -350,36 +350,36 @@ SMC_API short __stdcall smc_read_outbit_ex(WORD ConnectNo,WORD bitno,WORD *state
 SMC_API short __stdcall smc_read_inport_ex(WORD ConnectNo,WORD portno,DWORD *state);
 SMC_API short __stdcall smc_read_outport_ex(WORD ConnectNo,WORD portno,DWORD *state);
 
-//Í¨ÓÃIOÌØÊâ¹¦ÄÜ SMC104²»Ö§³Ö
+//é€šç”¨IOç‰¹æ®ŠåŠŸèƒ½ SMC104ä¸æ”¯æŒ
 SMC_API short __stdcall smc_reverse_outbit(WORD ConnectNo,WORD bitno,double reverse_time);
-//outmode 0-Êä³ö-ÑÓÊ±-·´×ª£»1-ÑÓÊ±-Êä³ö£»10-ÊäÈë-Êä³ö-ÑÓÊ±-·´×ª£»11-ÊäÈë-ÑÓÊ±-Êä³ö
+//outmode 0-è¾“å‡º-å»¶æ—¶-åè½¬ï¼›1-å»¶æ—¶-è¾“å‡ºï¼›10-è¾“å…¥-è¾“å‡º-å»¶æ—¶-åè½¬ï¼›11-è¾“å…¥-å»¶æ—¶-è¾“å‡º
 SMC_API short __stdcall smc_set_outbit_delay_reverse(WORD ConnectNo,WORD channel,WORD outbit,WORD outlevel,double outtime,WORD outmode,WORD inbit,WORD inlevel,double infiltertime);
 
-//ÉèÖÃIOÊä³öÒ»¶¨Âö³å¸öÊıµÄPWM²¨ĞÎÇúÏß
+//è®¾ç½®IOè¾“å‡ºä¸€å®šè„‰å†²ä¸ªæ•°çš„PWMæ³¢å½¢æ›²çº¿
 SMC_API short __stdcall smc_set_io_pwmoutput(WORD ConnectNo,WORD outbit,double time1, double time2, DWORD counts);
-//Çå³ıIOÊä³öPWM²¨ĞÎÇúÏß
+//æ¸…é™¤IOè¾“å‡ºPWMæ³¢å½¢æ›²çº¿
 SMC_API short __stdcall smc_clear_io_pwmoutput(WORD ConnectNo,WORD outbit);
 SMC_API short __stdcall smc_set_io_count_mode(WORD ConnectNo,WORD bitno,WORD mode,double filter);
 SMC_API short __stdcall smc_get_io_count_mode(WORD ConnectNo,WORD bitno,WORD *mode,double* filter);
 SMC_API short __stdcall smc_set_io_count_value(WORD ConnectNo,WORD bitno,DWORD CountValue);
 SMC_API short __stdcall smc_get_io_count_value(WORD ConnectNo,WORD bitno,DWORD* CountValue);
-//ĞéÄâIOÓ³Éä ÓÃÓÚÊäÈëÂË²¨¹¦ÄÜ  SMC104²»Ö§³Ö
+//è™šæ‹ŸIOæ˜ å°„ ç”¨äºè¾“å…¥æ»¤æ³¢åŠŸèƒ½  SMC104ä¸æ”¯æŒ
 SMC_API short __stdcall smc_set_io_map_virtual(WORD ConnectNo,WORD bitno,WORD MapIoType,WORD MapIoIndex,double Filter);
 SMC_API short __stdcall smc_get_io_map_virtual(WORD ConnectNo,WORD bitno,WORD* MapIoType,WORD* MapIoIndex,double* Filter);
 SMC_API short __stdcall smc_read_inbit_virtual(WORD ConnectNo,WORD bitno); 
 /*********************************************************************************************************
-×¨ÓÃIO²Ù×÷
+ä¸“ç”¨IOæ“ä½œ
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_io_dstp_mode(WORD ConnectNo,WORD axis,WORD enable,WORD logic); 
 SMC_API short __stdcall smc_get_io_dstp_mode(WORD ConnectNo,WORD axis,WORD *enable,WORD *logic);	
 SMC_API short __stdcall smc_set_alm_mode(WORD ConnectNo,WORD axis,WORD enable,WORD alm_logic,WORD alm_action);
 SMC_API short __stdcall smc_get_alm_mode(WORD ConnectNo,WORD axis,WORD *enable,WORD *alm_logic,WORD *alm_action);
 
-//µ±Í¬Ê±¿ªÆôÓ²¼şINPºÍÈí¼şINPÊ±×îºóINP×´Ì¬ÊÇ±ØĞëÁ½ÖÖINPĞÅºÅ¾ùµ½Î»²ÅÈÏÎªµ½Î»
-//Ó²¼şÊäÈëINPÅäÖÃ
+//å½“åŒæ—¶å¼€å¯ç¡¬ä»¶INPå’Œè½¯ä»¶INPæ—¶æœ€åINPçŠ¶æ€æ˜¯å¿…é¡»ä¸¤ç§INPä¿¡å·å‡åˆ°ä½æ‰è®¤ä¸ºåˆ°ä½
+//ç¡¬ä»¶è¾“å…¥INPé…ç½®
 SMC_API short __stdcall smc_set_inp_mode(WORD ConnectNo,WORD axis,WORD enable,WORD inp_logic);
 SMC_API short __stdcall smc_get_inp_mode(WORD ConnectNo,WORD axis,WORD *enable,WORD *inp_logic);
-//Èí¼ş¼ì²âINPÅäÖÃ 364E/632E/608Ö§³Ö
+//è½¯ä»¶æ£€æµ‹INPé…ç½® 364E/632E/608æ”¯æŒ
 SMC_API short __stdcall smc_set_sinp_param_unit(WORD ConnectNo,WORD axis,WORD enable, double inp_error, double inp_time_s);
 SMC_API short __stdcall smc_get_sinp_param_unit(WORD ConnectNo,WORD axis,WORD *enable, double *inp_error, double *inp_time_s);
 
@@ -397,7 +397,7 @@ SMC_API short __stdcall smc_read_ez_pin(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_read_rdy_pin(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_read_cmp_pin(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_write_cmp_pin(WORD ConnectNo,WORD axis, WORD on_off);
-//´ø´íÎóÂë·µ»ØÖµº¯Êı
+//å¸¦é”™è¯¯ç è¿”å›å€¼å‡½æ•°
 SMC_API short __stdcall smc_read_sevon_pin_ex(WORD ConnectNo,WORD axis,WORD *state);
 SMC_API short __stdcall smc_read_erc_pin_ex(WORD ConnectNo,WORD axis,WORD *state); 
 SMC_API short __stdcall smc_read_alarm_pin_ex(WORD ConnectNo,WORD axis,WORD *state);
@@ -409,27 +409,27 @@ SMC_API short __stdcall smc_read_emg_pin_ex(WORD ConnectNo,WORD uiaxis,WORD *sta
 SMC_API short __stdcall smc_read_ez_pin_ex(WORD ConnectNo,WORD axis,WORD *state);
 SMC_API short __stdcall smc_read_rdy_pin_ex(WORD ConnectNo,WORD axis,WORD *state);
 /*********************************************************************************************************
-Î»ÖÃ±È½Ï
+ä½ç½®æ¯”è¾ƒ
 *********************************************************************************************************/
-//µ¥ÖáÎ»ÖÃ±È½Ï		 
-SMC_API short __stdcall smc_compare_set_config(WORD ConnectNo,WORD axis,WORD enable, WORD cmp_source); 	//ÅäÖÃ±È½ÏÆ÷
-SMC_API short __stdcall smc_compare_get_config(WORD ConnectNo,WORD axis,WORD *enable, WORD *cmp_source);	//¶ÁÈ¡ÅäÖÃ±È½ÏÆ÷
-SMC_API short __stdcall smc_compare_clear_points(WORD ConnectNo,WORD axis); 	//Çå³ıËùÓĞ±È½Ïµã
-SMC_API short __stdcall smc_compare_add_point_unit(WORD ConnectNo,WORD axis,double pos,WORD dir, WORD action,DWORD actpara); 	//Ìí¼Ó±È½Ïµã
-SMC_API short __stdcall smc_compare_add_point_cycle(WORD ConnectNo,WORD axis,double pos,WORD dir, DWORD bitno,DWORD cycle,WORD level);//´¿×ÜÏß²úÆ·Ê¹ÓÃ Ìí¼Ó±È½Ïµã
-SMC_API short __stdcall smc_compare_get_current_point_unit(WORD ConnectNo,WORD axis,double *pos); 	//¶ÁÈ¡µ±Ç°±È½Ïµã
-SMC_API short __stdcall smc_compare_get_points_runned(WORD ConnectNo,WORD axis,long *pointNum); 	//²éÑ¯ÒÑ¾­±È½Ï¹ıµÄµã
-SMC_API short __stdcall smc_compare_get_points_remained(WORD ConnectNo,WORD axis,long *pointNum); 	//²éÑ¯¿ÉÒÔ¼ÓÈëµÄ±È½ÏµãÊıÁ¿
-//¶şÎ¬Î»ÖÃ±È½Ï
-SMC_API short __stdcall smc_compare_set_config_extern(WORD ConnectNo,WORD enable, WORD cmp_source); 	//ÅäÖÃ±È½ÏÆ÷
-SMC_API short __stdcall smc_compare_get_config_extern(WORD ConnectNo,WORD *enable, WORD *cmp_source);	//¶ÁÈ¡ÅäÖÃ±È½ÏÆ÷
-SMC_API short __stdcall smc_compare_clear_points_extern(WORD ConnectNo); 	//Çå³ıËùÓĞ±È½Ïµã
-SMC_API short __stdcall smc_compare_add_point_extern_unit(WORD ConnectNo,WORD* axis,double* pos,WORD* dir, WORD action,DWORD actpara); 	//Ìí¼ÓÁ½ÖáÎ»ÖÃ±È½Ïµã
-SMC_API short __stdcall smc_compare_add_point_cycle_2d(WORD ConnectNo,WORD* axis,double* pos,WORD* dir, DWORD bitno,DWORD cycle,WORD level); //´¿×ÜÏß²úÆ·Ê¹ÓÃ Ìí¼Ó±È½Ïµã
-SMC_API short __stdcall smc_compare_get_current_point_extern_unit(WORD ConnectNo,double *pos); 	//¶ÁÈ¡µ±Ç°±È½Ïµã
-SMC_API short __stdcall smc_compare_get_points_runned_extern(WORD ConnectNo,long *pointNum); 	//²éÑ¯ÒÑ¾­±È½Ï¹ıµÄµã
-SMC_API short __stdcall smc_compare_get_points_remained_extern(WORD ConnectNo,long *pointNum); 	//²éÑ¯¿ÉÒÔ¼ÓÈëµÄ±È½ÏµãÊıÁ¿
-//¸ßËÙÎ»ÖÃ±È½Ï
+//å•è½´ä½ç½®æ¯”è¾ƒ		 
+SMC_API short __stdcall smc_compare_set_config(WORD ConnectNo,WORD axis,WORD enable, WORD cmp_source); 	//é…ç½®æ¯”è¾ƒå™¨
+SMC_API short __stdcall smc_compare_get_config(WORD ConnectNo,WORD axis,WORD *enable, WORD *cmp_source);	//è¯»å–é…ç½®æ¯”è¾ƒå™¨
+SMC_API short __stdcall smc_compare_clear_points(WORD ConnectNo,WORD axis); 	//æ¸…é™¤æ‰€æœ‰æ¯”è¾ƒç‚¹
+SMC_API short __stdcall smc_compare_add_point_unit(WORD ConnectNo,WORD axis,double pos,WORD dir, WORD action,DWORD actpara); 	//æ·»åŠ æ¯”è¾ƒç‚¹
+SMC_API short __stdcall smc_compare_add_point_cycle(WORD ConnectNo,WORD axis,double pos,WORD dir, DWORD bitno,DWORD cycle,WORD level);//çº¯æ€»çº¿äº§å“ä½¿ç”¨ æ·»åŠ æ¯”è¾ƒç‚¹
+SMC_API short __stdcall smc_compare_get_current_point_unit(WORD ConnectNo,WORD axis,double *pos); 	//è¯»å–å½“å‰æ¯”è¾ƒç‚¹
+SMC_API short __stdcall smc_compare_get_points_runned(WORD ConnectNo,WORD axis,long *pointNum); 	//æŸ¥è¯¢å·²ç»æ¯”è¾ƒè¿‡çš„ç‚¹
+SMC_API short __stdcall smc_compare_get_points_remained(WORD ConnectNo,WORD axis,long *pointNum); 	//æŸ¥è¯¢å¯ä»¥åŠ å…¥çš„æ¯”è¾ƒç‚¹æ•°é‡
+//äºŒç»´ä½ç½®æ¯”è¾ƒ
+SMC_API short __stdcall smc_compare_set_config_extern(WORD ConnectNo,WORD enable, WORD cmp_source); 	//é…ç½®æ¯”è¾ƒå™¨
+SMC_API short __stdcall smc_compare_get_config_extern(WORD ConnectNo,WORD *enable, WORD *cmp_source);	//è¯»å–é…ç½®æ¯”è¾ƒå™¨
+SMC_API short __stdcall smc_compare_clear_points_extern(WORD ConnectNo); 	//æ¸…é™¤æ‰€æœ‰æ¯”è¾ƒç‚¹
+SMC_API short __stdcall smc_compare_add_point_extern_unit(WORD ConnectNo,WORD* axis,double* pos,WORD* dir, WORD action,DWORD actpara); 	//æ·»åŠ ä¸¤è½´ä½ç½®æ¯”è¾ƒç‚¹
+SMC_API short __stdcall smc_compare_add_point_cycle_2d(WORD ConnectNo,WORD* axis,double* pos,WORD* dir, DWORD bitno,DWORD cycle,WORD level); //çº¯æ€»çº¿äº§å“ä½¿ç”¨ æ·»åŠ æ¯”è¾ƒç‚¹
+SMC_API short __stdcall smc_compare_get_current_point_extern_unit(WORD ConnectNo,double *pos); 	//è¯»å–å½“å‰æ¯”è¾ƒç‚¹
+SMC_API short __stdcall smc_compare_get_points_runned_extern(WORD ConnectNo,long *pointNum); 	//æŸ¥è¯¢å·²ç»æ¯”è¾ƒè¿‡çš„ç‚¹
+SMC_API short __stdcall smc_compare_get_points_remained_extern(WORD ConnectNo,long *pointNum); 	//æŸ¥è¯¢å¯ä»¥åŠ å…¥çš„æ¯”è¾ƒç‚¹æ•°é‡
+//é«˜é€Ÿä½ç½®æ¯”è¾ƒ
 SMC_API short __stdcall smc_hcmp_set_mode(WORD ConnectNo,WORD hcmp, WORD cmp_mode);
 SMC_API short __stdcall smc_hcmp_get_mode(WORD ConnectNo,WORD hcmp, WORD* cmp_mode);
 SMC_API short __stdcall smc_hcmp_set_config(WORD ConnectNo,WORD hcmp,WORD axis, WORD cmp_source, WORD cmp_logic,long time);
@@ -440,19 +440,19 @@ SMC_API short __stdcall smc_hcmp_get_liner_unit(WORD ConnectNo,WORD hcmp, double
 SMC_API short __stdcall smc_hcmp_get_current_state_unit(WORD ConnectNo,WORD hcmp,long *remained_points,double *current_point,long *runned_points); 
 SMC_API short __stdcall smc_hcmp_clear_points(WORD ConnectNo,WORD hcmp);
 
-//1¡¢	ÆôÓÃ»º´æ·½Ê½Ìí¼Ó±È½ÏÎ»ÖÃ£º
+//1ã€	å¯ç”¨ç¼“å­˜æ–¹å¼æ·»åŠ æ¯”è¾ƒä½ç½®ï¼š
 SMC_API short __stdcall smc_hcmp_fifo_set_mode(WORD ConnectNo,WORD hcmp, WORD fifo_mode);
 SMC_API short __stdcall smc_hcmp_fifo_get_mode(WORD ConnectNo,WORD hcmp, WORD* fifo_mode);
-//2¡¢	¶ÁÈ¡Ê£Óà»º´æ×´Ì¬£¬ÉÏÎ»»úÍ¨¹ı´Ëº¯ÊıÅĞ¶ÏÊÇ·ñ¼ÌĞøÌí¼Ó±È½ÏÎ»ÖÃ
+//2ã€	è¯»å–å‰©ä½™ç¼“å­˜çŠ¶æ€ï¼Œä¸Šä½æœºé€šè¿‡æ­¤å‡½æ•°åˆ¤æ–­æ˜¯å¦ç»§ç»­æ·»åŠ æ¯”è¾ƒä½ç½®
 SMC_API short __stdcall smc_hcmp_fifo_get_state(WORD ConnectNo,WORD hcmp,long *remained_points); 
-//3¡¢	°´Êı×éµÄ·½Ê½ÅúÁ¿Ìí¼Ó±È½ÏÎ»ÖÃ
+//3ã€	æŒ‰æ•°ç»„çš„æ–¹å¼æ‰¹é‡æ·»åŠ æ¯”è¾ƒä½ç½®
 SMC_API short __stdcall smc_hcmp_fifo_add_point_unit(WORD ConnectNo,WORD hcmp, WORD num,double *cmp_pos);
-//4¡¢	Çå³ı±È½ÏÎ»ÖÃ,Ò²»á°ÑFPGAµÄÎ»ÖÃÍ¬²½Çå³ıµô
+//4ã€	æ¸…é™¤æ¯”è¾ƒä½ç½®,ä¹Ÿä¼šæŠŠFPGAçš„ä½ç½®åŒæ­¥æ¸…é™¤æ‰
 SMC_API short __stdcall smc_hcmp_fifo_clear_points(WORD ConnectNo,WORD hcmp);
-//Ìí¼Ó´óÊı¾İ£¬»á¶ÂÈûÒ»¶ÎÊ±¼ä£¬Ö¸µ¼Êı¾İÌí¼ÓÍê³É
+//æ·»åŠ å¤§æ•°æ®ï¼Œä¼šå µå¡ä¸€æ®µæ—¶é—´ï¼ŒæŒ‡å¯¼æ•°æ®æ·»åŠ å®Œæˆ
 SMC_API short __stdcall smc_hcmp_fifo_add_table(WORD ConnectNo,WORD hcmp, WORD num,double *cmp_pos);
 
-//¶şÎ¬¸ßËÙÎ»ÖÃ±È½Ï
+//äºŒç»´é«˜é€Ÿä½ç½®æ¯”è¾ƒ
 SMC_API short __stdcall smc_hcmp_2d_set_enable(WORD ConnectNo,WORD hcmp, WORD cmp_enable);
 SMC_API short __stdcall smc_hcmp_2d_get_enable(WORD ConnectNo,WORD hcmp, WORD *cmp_enable);
 SMC_API short __stdcall smc_hcmp_2d_set_config_unit(WORD ConnectNo,WORD hcmp,WORD cmp_mode,WORD x_axis, WORD x_cmp_source, double x_cmp_error, WORD y_axis, WORD y_cmp_source, double y_cmp_error,WORD cmp_logic,int time);
@@ -463,20 +463,20 @@ SMC_API short __stdcall smc_hcmp_2d_add_point_unit(WORD ConnectNo,WORD hcmp, dou
 SMC_API short __stdcall smc_hcmp_2d_get_current_state_unit(WORD ConnectNo,WORD hcmp,int *remained_points,double *x_current_point,double *y_current_point,int *runned_points,WORD *current_state,WORD *current_outbit); 
 SMC_API short __stdcall smc_hcmp_2d_clear_points(WORD ConnectNo,WORD hcmp);
 SMC_API short __stdcall smc_hcmp_2d_force_output(WORD ConnectNo,WORD hcmp,WORD outbit);
-//¶şÎ¬¸ßËÙÎ»ÖÃ±È½Ï»º´æ
-//1¡¢	ÆôÓÃ»º´æ·½Ê½Ìí¼Ó±È½ÏÎ»ÖÃ£º
+//äºŒç»´é«˜é€Ÿä½ç½®æ¯”è¾ƒç¼“å­˜
+//1ã€	å¯ç”¨ç¼“å­˜æ–¹å¼æ·»åŠ æ¯”è¾ƒä½ç½®ï¼š
 SMC_API short __stdcall smc_hcmp_2d_fifo_set_mode(WORD ConnectNo,WORD hcmp, WORD fifo_mode);
 SMC_API short __stdcall smc_hcmp_2d_fifo_get_mode(WORD ConnectNo,WORD hcmp, WORD* fifo_mode);
-//2¡¢	¶ÁÈ¡Ê£Óà»º´æ×´Ì¬£¬ÉÏÎ»»úÍ¨¹ı´Ëº¯ÊıÅĞ¶ÏÊÇ·ñ¼ÌĞøÌí¼Ó±È½ÏÎ»ÖÃ
+//2ã€	è¯»å–å‰©ä½™ç¼“å­˜çŠ¶æ€ï¼Œä¸Šä½æœºé€šè¿‡æ­¤å‡½æ•°åˆ¤æ–­æ˜¯å¦ç»§ç»­æ·»åŠ æ¯”è¾ƒä½ç½®
 SMC_API short __stdcall smc_hcmp_2d_fifo_get_state(WORD ConnectNo,WORD hcmp,long *remained_points); 
-//3¡¢	°´Êı×éµÄ·½Ê½ÅúÁ¿Ìí¼Ó±È½ÏÎ»ÖÃ
+//3ã€	æŒ‰æ•°ç»„çš„æ–¹å¼æ‰¹é‡æ·»åŠ æ¯”è¾ƒä½ç½®
 SMC_API short __stdcall smc_hcmp_2d_fifo_add_point_unit(WORD ConnectNo,WORD hcmp, WORD num,double *x_cmp_pos,double *y_cmp_pos,WORD *cmp_outbit);
-//4¡¢	Çå³ı±È½ÏÎ»ÖÃ,Ò²»á°ÑFPGAµÄÎ»ÖÃÍ¬²½Çå³ıµô
+//4ã€	æ¸…é™¤æ¯”è¾ƒä½ç½®,ä¹Ÿä¼šæŠŠFPGAçš„ä½ç½®åŒæ­¥æ¸…é™¤æ‰
 SMC_API short __stdcall smc_hcmp_2d_fifo_clear_points(WORD ConnectNo,WORD hcmp);
-//Ìí¼Ó´óÊı¾İ£¬»á¶ÂÈûÒ»¶ÎÊ±¼ä£¬Ö¸µ¼Êı¾İÌí¼ÓÍê³É
+//æ·»åŠ å¤§æ•°æ®ï¼Œä¼šå µå¡ä¸€æ®µæ—¶é—´ï¼ŒæŒ‡å¯¼æ•°æ®æ·»åŠ å®Œæˆ
 SMC_API short __stdcall smc_hcmp_2d_fifo_add_table_unit(WORD ConnectNo,WORD hcmp, WORD num,double *x_cmp_pos,double *y_cmp_pos,WORD outbit);
 /*********************************************************************************************************
-Ô­µãËø´æ
+åŸç‚¹é”å­˜
 *********************************************************************************************************/	
 SMC_API short __stdcall smc_set_homelatch_mode(WORD ConnectNo,WORD axis,WORD enable,WORD logic,WORD source);
 SMC_API short __stdcall smc_get_homelatch_mode(WORD ConnectNo,WORD axis,WORD* enable,WORD* logic,WORD* source);
@@ -484,7 +484,7 @@ SMC_API long __stdcall smc_get_homelatch_flag(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_reset_homelatch_flag(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_get_homelatch_value_unit(WORD ConnectNo,WORD axis,double* pos_by_mm);
 /*********************************************************************************************************
-EZËø´æ
+EZé”å­˜
 *********************************************************************************************************/	
 SMC_API short __stdcall smc_set_ezlatch_mode(WORD ConnectNo,WORD axis,WORD enable,WORD logic,WORD source);
 SMC_API short __stdcall smc_get_ezlatch_mode(WORD ConnectNo,WORD axis,WORD* enable,WORD* logic,WORD* source);
@@ -492,7 +492,7 @@ SMC_API long __stdcall smc_get_ezlatch_flag(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_reset_ezlatch_flag(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_get_ezlatch_value_unit(WORD ConnectNo,WORD axis,double* pos_by_mm);
 /*********************************************************************************************************
-¸ßËÙËø´æ
+é«˜é€Ÿé”å­˜
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_ltc_mode(WORD ConnectNo,WORD axis,WORD ltc_logic,WORD ltc_mode,double filter);
 SMC_API short __stdcall smc_get_ltc_mode(WORD ConnectNo,WORD axis,WORD*ltc_logic,WORD*ltc_mode,double *filter);
@@ -502,37 +502,37 @@ SMC_API short __stdcall smc_get_latch_flag(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_reset_latch_flag(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_get_latch_value_unit(WORD ConnectNo,WORD axis,double* pos_by_mm);
 /*********************************************************************************************************
-¸ßËÙËø´æ ĞÂ¹æ»®20170308
+é«˜é€Ÿé”å­˜ æ–°è§„åˆ’20170308
 *********************************************************************************************************/
-//ÅäÖÃËø´æÆ÷£ºËø´æÄ£Ê½0-µ¥´ÎËø´æ£¬1-Á¬ĞøËø´æ£»Ëø´æ±ßÑØ0-ÏÂ½µÑØ£¬1-ÉÏÉıÑØ£¬2-Ë«±ßÑØ£»ÂË²¨Ê±¼ä£¬µ¥Î»us
+//é…ç½®é”å­˜å™¨ï¼šé”å­˜æ¨¡å¼0-å•æ¬¡é”å­˜ï¼Œ1-è¿ç»­é”å­˜ï¼›é”å­˜è¾¹æ²¿0-ä¸‹é™æ²¿ï¼Œ1-ä¸Šå‡æ²¿ï¼Œ2-åŒè¾¹æ²¿ï¼›æ»¤æ³¢æ—¶é—´ï¼Œå•ä½us
 SMC_API short __stdcall smc_ltc_set_mode(WORD ConnectNo,WORD latch,WORD ltc_mode,WORD ltc_logic,double filter);
 SMC_API short __stdcall smc_ltc_get_mode(WORD ConnectNo,WORD latch,WORD *ltc_mode,WORD *ltc_logic,double *filter);
-//ÅäÖÃËø´æÔ´£º0-Ö¸ÁîÎ»ÖÃ£¬1-±àÂëÆ÷·´À¡Î»ÖÃ
+//é…ç½®é”å­˜æºï¼š0-æŒ‡ä»¤ä½ç½®ï¼Œ1-ç¼–ç å™¨åé¦ˆä½ç½®
 SMC_API short __stdcall smc_ltc_set_source(WORD ConnectNo,WORD latch,WORD axis,WORD ltc_source);
 SMC_API short __stdcall smc_ltc_get_source(WORD ConnectNo,WORD latch,WORD axis,WORD *ltc_source);
-//¸´Î»Ëø´æÆ÷
+//å¤ä½é”å­˜å™¨
 SMC_API short __stdcall smc_ltc_reset(WORD ConnectNo,WORD latch);
-//¶ÁÈ¡Ëø´æ¸öÊı
+//è¯»å–é”å­˜ä¸ªæ•°
 SMC_API short __stdcall smc_ltc_get_number(WORD ConnectNo,WORD latch,WORD axis,int *number);
-//¶ÁÈ¡Ëø´æÖµ
+//è¯»å–é”å­˜å€¼
 SMC_API short __stdcall smc_ltc_get_value_unit(WORD ConnectNo,WORD latch,WORD axis,double *value);
 /*********************************************************************************************************
-Èí¼şËø´æ 20170626
+è½¯ä»¶é”å­˜ 20170626
 *********************************************************************************************************/
-//ÅäÖÃËø´æÆ÷£ºËø´æÄ£Ê½0-µ¥´ÎËø´æ£¬1-Á¬ĞøËø´æ£»Ëø´æ±ßÑØ0-ÏÂ½µÑØ£¬1-ÉÏÉıÑØ£¬2-Ë«±ßÑØ£»ÂË²¨Ê±¼ä£¬µ¥Î»us
+//é…ç½®é”å­˜å™¨ï¼šé”å­˜æ¨¡å¼0-å•æ¬¡é”å­˜ï¼Œ1-è¿ç»­é”å­˜ï¼›é”å­˜è¾¹æ²¿0-ä¸‹é™æ²¿ï¼Œ1-ä¸Šå‡æ²¿ï¼Œ2-åŒè¾¹æ²¿ï¼›æ»¤æ³¢æ—¶é—´ï¼Œå•ä½us
 SMC_API short __stdcall smc_softltc_set_mode(WORD ConnectNo,WORD latch,WORD ltc_enable,WORD ltc_mode,WORD ltc_inbit,WORD ltc_logic,double filter);
 SMC_API short __stdcall smc_softltc_get_mode(WORD ConnectNo,WORD latch,WORD *ltc_enable,WORD *ltc_mode,WORD *ltc_inbit,WORD *ltc_logic,double *filter);
-//ÅäÖÃËø´æÔ´£º0-Ö¸ÁîÎ»ÖÃ£¬1-±àÂëÆ÷·´À¡Î»ÖÃ
+//é…ç½®é”å­˜æºï¼š0-æŒ‡ä»¤ä½ç½®ï¼Œ1-ç¼–ç å™¨åé¦ˆä½ç½®
 SMC_API short __stdcall smc_softltc_set_source(WORD ConnectNo,WORD latch,WORD axis,WORD ltc_source);
 SMC_API short __stdcall smc_softltc_get_source(WORD ConnectNo,WORD latch,WORD axis,WORD *ltc_source);
-//¸´Î»Ëø´æÆ÷
+//å¤ä½é”å­˜å™¨
 SMC_API short __stdcall smc_softltc_reset(WORD ConnectNo,WORD latch);
-//¶ÁÈ¡Ëø´æ¸öÊı
+//è¯»å–é”å­˜ä¸ªæ•°
 SMC_API short __stdcall smc_softltc_get_number(WORD ConnectNo,WORD latch,WORD axis,int *number);
-//¶ÁÈ¡Ëø´æÖµ
+//è¯»å–é”å­˜å€¼
 SMC_API short __stdcall smc_softltc_get_value_unit(WORD ConnectNo,WORD latch,WORD axis,double *value);
 /*********************************************************************************************************
-Ä£ÄâÁ¿²Ù×÷
+æ¨¡æ‹Ÿé‡æ“ä½œ
 *********************************************************************************************************/
 SMC_API short __stdcall smc_set_ain_action(WORD ConnectNo,WORD channel,WORD mode,double fvoltage,WORD action,double actpara);
 SMC_API short __stdcall smc_get_ain_action(WORD ConnectNo,WORD channel,WORD* mode,double* fvoltage,WORD* action,double* actpara);
@@ -542,7 +542,7 @@ SMC_API double __stdcall smc_get_ain(WORD ConnectNo,WORD channel);
 SMC_API short __stdcall smc_set_da_output(WORD ConnectNo, WORD channel,double Vout);
 SMC_API short __stdcall smc_get_da_output(WORD ConnectNo,WORD channel,double* Vout);
 /*********************************************************************************************************
-ÎÄ¼ş²Ù×÷
+æ–‡ä»¶æ“ä½œ
 *********************************************************************************************************/
 SMC_API short __stdcall smc_download_file(WORD ConnectNo, const char* pfilename, const char* pfilenameinControl,WORD filetype);
 SMC_API short __stdcall smc_download_memfile(WORD ConnectNo, const char* pbuffer, uint32 buffsize, const char* pfilenameinControl,WORD filetype);
@@ -552,7 +552,7 @@ SMC_API short __stdcall smc_download_file_to_ram(WORD ConnectNo, const char* pfi
 SMC_API short __stdcall smc_download_memfile_to_ram(WORD ConnectNo, const char* pbuffer, uint32 buffsize,WORD filetype);
 SMC_API short __stdcall smc_get_progress(WORD ConnectNo,float* process);
 /********************************************************************************************************
-UÅÌÎÄ¼ş¹ÜÀí
+Uç›˜æ–‡ä»¶ç®¡ç†
 *********************************************************************************************************/
 SMC_API short __stdcall smc_udisk_get_state(WORD ConnectNo,WORD *state);
 SMC_API short __stdcall smc_udisk_check_file(WORD ConnectNo,char* filename,int* filesize,WORD filetype);
@@ -560,9 +560,9 @@ SMC_API short __stdcall smc_udisk_get_first_file(WORD ConnectNo,char* filename,i
 SMC_API short __stdcall smc_udisk_get_next_file(WORD ConnectNo,char* filename,int* filesize,int* fileid,WORD filetype);
 SMC_API short __stdcall smc_udisk_copy_file(WORD ConnectNo,const char* SrcFileName,const char* DstFileName,WORD filetype,WORD mode);
 /*********************************************************************************************************
-¼Ä´æÆ÷²Ù×÷
+å¯„å­˜å™¨æ“ä½œ
 *********************************************************************************************************/
-//Modbus¼Ä´æÆ÷
+//Modbuså¯„å­˜å™¨
 SMC_API short __stdcall smc_set_modbus_0x(WORD ConnectNo, WORD start, WORD inum, char* pdata);
 SMC_API short __stdcall smc_get_modbus_0x(WORD ConnectNo, WORD start, WORD inum, char* pdata);
 SMC_API short __stdcall smc_set_modbus_4x(WORD ConnectNo, WORD start, WORD inum, WORD* pdata);
@@ -573,10 +573,10 @@ SMC_API short __stdcall smc_get_modbus_4x_float(WORD ConnectNo, WORD start, WORD
 
 SMC_API short __stdcall smc_set_modbus_4x_int(WORD ConnectNo, WORD start, WORD inum, const int* pdata);
 SMC_API short __stdcall smc_get_modbus_4x_int(WORD ConnectNo, WORD start, WORD inum, int* pdata);
-//µôµç±£³Ö¼Ä´æÆ÷
+//æ‰ç”µä¿æŒå¯„å­˜å™¨
 SMC_API short __stdcall smc_set_persistent_reg(WORD ConnectNo, DWORD start, DWORD inum, const char* pdata);
 SMC_API short __stdcall smc_get_persistent_reg(WORD ConnectNo, DWORD start, DWORD inum, char* pdata);
-//ÒÔÏÂ·ÖÀàĞÍÇø¼ä
+//ä»¥ä¸‹åˆ†ç±»å‹åŒºé—´
 SMC_API short __stdcall smc_set_persistent_reg_byte(WORD ConnectNo, DWORD start, DWORD inum, const char* pdata);
 SMC_API short __stdcall smc_get_persistent_reg_byte(WORD ConnectNo, DWORD start, DWORD inum, char* pdata);
 SMC_API short __stdcall smc_set_persistent_reg_float(WORD ConnectNo, DWORD start, DWORD inum, const float* pdata);
@@ -586,7 +586,7 @@ SMC_API short __stdcall smc_get_persistent_reg_int(WORD ConnectNo, DWORD start, 
 SMC_API short __stdcall smc_set_persistent_reg_short(WORD ConnectNo, DWORD start, DWORD inum, const short* pdata);
 SMC_API short __stdcall smc_get_persistent_reg_short(WORD ConnectNo, DWORD start, DWORD inum, short* pdata);
 /*********************************************************************************************************
-Basic³ÌĞò¿ØÖÆ
+Basicç¨‹åºæ§åˆ¶
 *********************************************************************************************************/
 SMC_API short __stdcall smc_read_array(WORD ConnectNo ,const char* name,uint32 index,int64* var,int32 *num);
 SMC_API short __stdcall smc_modify_array(WORD ConnectNo ,const char* name,uint32 index,int64* var,int32 num);
@@ -614,7 +614,7 @@ SMC_API short __stdcall smc_basic_break_info(WORD ConnectNo, uint32* line,uint32
 SMC_API short __stdcall smc_basic_message(WORD ConnectNo, char * pbuff, uint32 uimax, uint32 *puiread);
 SMC_API short __stdcall smc_basic_command(WORD ConnectNo, const char* pszCommand, char* psResponse, uint32 uiResponseLength);
 /*********************************************************************************************************
-G´úÂë³ÌĞò¿ØÖÆ
+Gä»£ç ç¨‹åºæ§åˆ¶
 *********************************************************************************************************/
 SMC_API short __stdcall smc_gcode_check_file(WORD ConnectNo, const char* pfilenameinControl, uint8 *pbIfExist, uint32 *pFileSize);
 SMC_API short __stdcall smc_gcode_get_first_file(WORD ConnectNo,char* pfilenameinControl,uint32* pFileSize);
@@ -652,7 +652,7 @@ SMC_API short __stdcall smc_gcode_get_step_state(WORD ConnectNo,WORD *state);
 SMC_API short __stdcall smc_gcode_stop_reason(WORD ConnectNo,WORD *stop_reason);
 
 /*********************************************************************************************************
-×´Ì¬¼à¿Ø
+çŠ¶æ€ç›‘æ§
 *********************************************************************************************************/
 SMC_API short __stdcall smc_emg_stop(WORD ConnectNo);
 SMC_API short __stdcall smc_check_done(WORD ConnectNo,WORD axis);
@@ -672,19 +672,19 @@ SMC_API short __stdcall smc_get_stop_reason(WORD ConnectNo,WORD axis,long* StopR
 SMC_API short __stdcall smc_clear_stop_reason(WORD ConnectNo,WORD axis);
 
 /**************************************************************************************************************************
-Êı¾İ²É¼¯
+æ•°æ®é‡‡é›†
 ***************************************************************************************************************************/
 SMC_API short __stdcall smc_trace_set_source(WORD ConnectNo,WORD source);
-//µ¥ÖáÊı¾İÊµÊ±²É¼¯µ÷ÓÃ
+//å•è½´æ•°æ®å®æ—¶é‡‡é›†è°ƒç”¨
 SMC_API short __stdcall smc_read_trace_data(WORD ConnectNo,WORD axis,long bufsize,double *time,double *pos,double *vel,double *acc,long *recv_num);
-//¶àÖáÊı¾İ²É¼¯»º´æÎÄ¼ş
+//å¤šè½´æ•°æ®é‡‡é›†ç¼“å­˜æ–‡ä»¶
 SMC_API short __stdcall smc_trace_start(WORD ConnectNo,WORD AxisNum,WORD *AxisList);
 SMC_API short __stdcall smc_trace_stop(WORD ConnectNo);
-//filetype==100²É¼¯ÎÄ¼ş
+//filetype==100é‡‡é›†æ–‡ä»¶
 //SMC_API short __stdcall smc_upload_file(WORD ConnectNo, const char* pfilename, const char* pfilenameinControl, WORD filetype);
 //SMC_API short __stdcall smc_upload_memfile(WORD ConnectNo, char* pbuffer, uint32 buffsize, const char* pfilenameinControl, uint32* puifilesize,WORD filetype);
 
-//TRACEÊı¾İ²É¼¯ĞÂ¹æ»®
+//TRACEæ•°æ®é‡‡é›†æ–°è§„åˆ’
 SMC_API short __stdcall smc_trace_set_config(WORD ConnectNo, short trace_cycle, short lost_handle, short trace_type, short trigger_object_index, short trigger_type, int mask, long long condition);
 SMC_API short __stdcall smc_trace_get_config(WORD ConnectNo,short * trace_cycle, short * lost_handle, short * trace_type, short * trigger_object_index, short * trigger_type, int * mask, long long * condition);
 SMC_API short __stdcall smc_trace_reset_config_object(WORD ConnectNo);
@@ -700,43 +700,43 @@ SMC_API short __stdcall smc_trace_reset_lost_flag(WORD ConnectNo);
 
 
 /*********************************************************************************************************
-×ÜÏß×¨ÓÃº¯Êı
-PortNo×ÜÏß¶Ë¿ÚºÅ
+æ€»çº¿ä¸“ç”¨å‡½æ•°
+PortNoæ€»çº¿ç«¯å£å·
 0-CANopen0
 1-CANopen1
 2-EtherCAT0
 3-EtherCAT1
 *********************************************************************************************************/
 /*************************************** EtherCAT & CANopen *****************************/
-//´ÓÕ¾¶ÔÏó×Öµä
+//ä»ç«™å¯¹è±¡å­—å…¸
 SMC_API short __stdcall nmcs_set_node_od(WORD ConnectNo,WORD PortNo,WORD NodeNo, WORD Index,WORD SubIndex,WORD ValLength,DWORD Value);
 SMC_API short __stdcall nmcs_get_node_od(WORD ConnectNo,WORD PortNo,WORD NodeNo, WORD Index,WORD SubIndex,WORD ValLength,DWORD* Value);
-//°´¸¡µãÊı¶ÁĞ´¶ÔÏó×ÖµäÖµ
+//æŒ‰æµ®ç‚¹æ•°è¯»å†™å¯¹è±¡å­—å…¸å€¼
 SMC_API short __stdcall nmcs_set_node_od_float(WORD ConnectNo,WORD PortNum,WORD NodeNum, WORD Index,WORD SubIndex,WORD ValLength,float Value);
 SMC_API short __stdcall nmcs_get_node_od_float(WORD ConnectNo,WORD PortNum,WORD NodeNum, WORD Index,WORD SubIndex,WORD ValLength,float* Value);
-//°´×Ö½ÚÁ÷Êı×é¶ÁĞ´¶ÔÏó×ÖµäÖµ
+//æŒ‰å­—èŠ‚æµæ•°ç»„è¯»å†™å¯¹è±¡å­—å…¸å€¼
 SMC_API short __stdcall nmcs_set_node_od_pbyte(WORD ConnectNo,WORD PortNum,WORD NodeNum, WORD Index,WORD SubIndex,WORD Bytes,unsigned char * Value);
 SMC_API short __stdcall nmcs_get_node_od_pbyte(WORD ConnectNo,WORD PortNum,WORD NodeNum, WORD Index,WORD SubIndex,WORD Bytes,unsigned char * Value);
 
 /*************************************** EtherCAT & RTEX *****************************/
-//µ¥ÖáÊ¹ÄÜº¯Êı
+//å•è½´ä½¿èƒ½å‡½æ•°
 SMC_API short __stdcall nmcs_set_axis_enable(WORD ConnectNo ,WORD axis);
 SMC_API short __stdcall nmcs_set_axis_disable(WORD ConnectNo,WORD axis);
-//×ÜÏßÖáIO²Ù×÷
+//æ€»çº¿è½´IOæ“ä½œ
 SMC_API DWORD __stdcall nmcs_get_axis_io_out(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall nmcs_set_axis_io_out(WORD ConnectNo,WORD axis,DWORD  iostate);
 SMC_API DWORD __stdcall nmcs_get_axis_io_in(WORD ConnectNo,WORD axis);
-//×ÜÏßÖÜÆÚ
+//æ€»çº¿å‘¨æœŸ
 SMC_API short __stdcall nmcs_set_cycletime(WORD ConnectNo,WORD PortNo,DWORD CycleTime);
 SMC_API short __stdcall nmcs_get_cycletime(WORD ConnectNo,WORD PortNo,DWORD* CycleTime);
-//ÉèÖÃÆ«ÒÆÁ¿µÄÎ»ÖÃÖµ
+//è®¾ç½®åç§»é‡çš„ä½ç½®å€¼
 SMC_API short __stdcall nmcs_set_offset_pos(WORD ConnectNo,WORD axis, double offset_pos);
 SMC_API short __stdcall nmcs_get_offset_pos(WORD ConnectNo,WORD axis, double* offset_pos);
 /*************************************** EtherCAT & CANopen  & RTEX *********************/
 SMC_API short __stdcall nmcs_get_axis_type(WORD ConnectNo,WORD axis, WORD* Axis_Type);
-//¶ÁÈ¡Ö¸¶¨ÖáÓĞ¹ØÔË¶¯ĞÅºÅµÄ×´Ì¬
+//è¯»å–æŒ‡å®šè½´æœ‰å…³è¿åŠ¨ä¿¡å·çš„çŠ¶æ€
 SMC_API short __stdcall nmcs_axis_io_status(WORD ConnectNo,WORD axis);	
-//×ÜÏß´íÎó
+//æ€»çº¿é”™è¯¯
 SMC_API short __stdcall nmcs_get_card_errcode(WORD ConnectNo,DWORD *Errcode);
 SMC_API short __stdcall nmcs_clear_card_errcode(WORD ConnectNo);
 
@@ -746,30 +746,30 @@ SMC_API short __stdcall nmcs_clear_errcode(WORD ConnectNo,WORD PortNo);
 SMC_API short __stdcall nmcs_get_axis_errcode(WORD ConnectNo,WORD axis,DWORD *Errcode);
 SMC_API short __stdcall nmcs_clear_axis_errcode(WORD ConnectNo,WORD iaxis);
 
-//¶ÁÈ¡ÖáÊı¡¢IOÊı¡¢Ä£ÄâÁ¿Êı
+//è¯»å–è½´æ•°ã€IOæ•°ã€æ¨¡æ‹Ÿé‡æ•°
 SMC_API short __stdcall nmcs_get_total_axes(WORD ConnectNo,DWORD *TotalAxis);
 SMC_API short __stdcall nmcs_get_total_ionum(WORD ConnectNo,WORD *TotalIn,WORD *TotalOut);
-//°´½Úµã²Ù×÷À©Õ¹IO
+//æŒ‰èŠ‚ç‚¹æ“ä½œæ‰©å±•IO
 SMC_API short __stdcall nmcs_read_inbit_extern(WORD ConnectNo,WORD PortNo,WORD NodeID,WORD BitNo,WORD *IoValue);
 SMC_API short __stdcall nmcs_read_inport_extern(WORD ConnectNo,WORD PortNo,WORD NodeID,WORD IoPortNo,DWORD *IoValue);
 SMC_API short __stdcall nmcs_write_outbit_extern(WORD ConnectNo,WORD PortNo,WORD NodeID,WORD BitNo,WORD IoValue);
 SMC_API short __stdcall nmcs_write_outport_extern(WORD ConnectNo,WORD PortNo,WORD NodeID,WORD IoPortNo,DWORD IoValue);
 SMC_API short __stdcall nmcs_read_outbit_extern(WORD ConnectNo,WORD PortNo,WORD NodeID,WORD BitNo,WORD *IoValue);
 SMC_API short __stdcall nmcs_read_outport_extern(WORD ConnectNo,WORD PortNo,WORD NodeID,WORD IoPortNo,DWORD *IoValue);
-//×ÜÏß¸´Î»Êä³ö±£³Ö¿ª¹ØÉèÖÃ
+//æ€»çº¿å¤ä½è¾“å‡ºä¿æŒå¼€å…³è®¾ç½®
 SMC_API short __stdcall nmcs_set_slave_output_retain(WORD ConnectNo,WORD Enable);
 SMC_API short __stdcall nmcs_get_slave_output_retain(WORD ConnectNo,WORD * Enable);
 /*************************************** CANopen **************************************/
-//¸´Î»CANopenÖ÷Õ¾
+//å¤ä½CANopenä¸»ç«™
 SMC_API short __stdcall nmcs_reset_canopen(WORD ConnectNo);
-//»ñÈ¡ĞÄÌø±¨ÎÄ¶ªÊ§ĞÅÏ¢
+//è·å–å¿ƒè·³æŠ¥æ–‡ä¸¢å¤±ä¿¡æ¯
 SMC_API short __stdcall nmcs_get_LostHeartbeat_Nodes(WORD ConnectNo,WORD PortNo,WORD* NodeID,WORD* NodeNum);
-//»ñÈ¡½ô¼±±¨ÎÄĞÅÏ¢
+//è·å–ç´§æ€¥æŠ¥æ–‡ä¿¡æ¯
 SMC_API short __stdcall nmcs_get_EmergeneyMessege_Nodes(WORD ConnectNo,WORD PortNo,DWORD* NodeMsg,WORD* MsgNum);
 SMC_API short __stdcall nmcs_SendNmtCommand(WORD ConnectNo,WORD PortNo,WORD NodeID,WORD NmtCommand);
-//Çå³ı±¨¾¯ĞÅºÅ
+//æ¸…é™¤æŠ¥è­¦ä¿¡å·
 SMC_API short __stdcall nmcs_set_alarm_clear(WORD ConnectNo,WORD PortNo,WORD NodeNo);
-//Í¬²½ÔË¶¯
+//åŒæ­¥è¿åŠ¨
 SMC_API short __stdcall nmcs_syn_move_unit(WORD ConnectNo,WORD AxisNum,WORD* AxisList,double* Position,WORD* PosiMode);
 
 SMC_API short __stdcall nmcs_get_total_adcnum(WORD ConnectNo,WORD *TotalIn,WORD *TotalOut);
@@ -777,11 +777,11 @@ SMC_API short __stdcall nmcs_get_total_adcnum(WORD ConnectNo,WORD *TotalIn,WORD 
 SMC_API short __stdcall nmcs_set_etc_el_stop_mode(WORD ConnectNo,WORD axis,WORD el_control_mode, double diff_pos,DWORD filter);
 
 /*************************************** EtherCAT **************************************/
-//¸´Î»EtherCATÖ÷Õ¾
+//å¤ä½EtherCATä¸»ç«™
 SMC_API short __stdcall nmcs_reset_etc(WORD ConnectNo);
-//Í£Ö¹EtherCATĞ­ÒéÕ»
+//åœæ­¢EtherCATåè®®æ ˆ
 SMC_API short __stdcall nmcs_stop_etc(WORD ConnectNo,WORD* ETCState);
-//¶ÁÈ¡EtherCATÖá×´Ì¬
+//è¯»å–EtherCATè½´çŠ¶æ€
 SMC_API short __stdcall nmcs_get_axis_state_machine(WORD ConnectNo,WORD axis, WORD* Axis_StateMachine);
 
 #define DEVICE_STATE_INIT                                   ((EC_T_WORD)0x0001)
@@ -792,18 +792,18 @@ SMC_API short __stdcall nmcs_get_axis_state_machine(WORD ConnectNo,WORD axis, WO
 SMC_API short __stdcall nmcs_set_slave_state(WORD ConnectNo, WORD SlaveId, WORD SlaveState);
 SMC_API short __stdcall nmcs_get_slave_state(WORD ConnectNo, WORD SlaveId, WORD *SlaveState);
 
-//°´ÖáºÅ¶ÁÈ¡´ÓÕ¾ºÅ
+//æŒ‰è½´å·è¯»å–ä»ç«™å·
 SMC_API short __stdcall nmcs_get_axis_node_address(WORD ConnectNo,WORD axis, WORD* SlaveAddr,WORD* Sub_SlaveAddr);
 SMC_API short __stdcall nmcs_write_rxpdo_extra(WORD ConnectNo,WORD PortNo,WORD address,WORD DataLen,DWORD Value);
 SMC_API short __stdcall nmcs_read_rxpdo_extra(WORD ConnectNo,WORD PortNo,WORD address,WORD DataLen,DWORD* Value);
 SMC_API short __stdcall nmcs_read_txpdo_extra(WORD ConnectNo,WORD PortNo,WORD address,WORD DataLen,DWORD* Value);
 
-//×ª¾Ø¿ØÖÆ¹¦ÄÜº¯Êı
+//è½¬çŸ©æ§åˆ¶åŠŸèƒ½å‡½æ•°
 SMC_API short __stdcall nmcs_torque_move(WORD CardNo,WORD axis,int Torque,WORD PosLimitValid,double PosLimitValue,WORD PosMode);
 SMC_API short __stdcall nmcs_change_torque(WORD CardNo,WORD axis,int Torque);
 SMC_API short __stdcall nmcs_get_torque(WORD CardNo,WORD axis,int* Torque);
 
-//PDO»º´æÔË¶¯
+//PDOç¼“å­˜è¿åŠ¨
 SMC_API short __stdcall smc_pdo_buffer_enter(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_pdo_buffer_stop(WORD ConnectNo,WORD axis);
 SMC_API short __stdcall smc_pdo_buffer_clear(WORD ConnectNo,WORD axis);
@@ -815,7 +815,7 @@ SMC_API short __stdcall smc_pdo_buffer_start_multi(WORD ConnectNo,WORD AxisNum,W
 SMC_API short __stdcall smc_pdo_buffer_pause_multi(WORD ConnectNo,WORD AxisNum,WORD * AxisList,WORD * ResultList);
 SMC_API short __stdcall smc_pdo_buffer_stop_multi(WORD ConnectNo,WORD AxisNum,WORD * AxisList,WORD * ResultList);
 
-//pdo»º´æ²É¼¯
+//pdoç¼“å­˜é‡‡é›†
 SMC_API short __stdcall nmcs_start_pdo_trace(WORD ConnectNo,WORD Channel,WORD SlaveAddr,WORD Index_Num,DWORD Trace_Len,WORD *Index,WORD *Sub_Index);
 SMC_API short __stdcall nmcs_get_pdo_trace(WORD ConnectNo,WORD Channel,WORD SlaveAddr,WORD *Index_Num,DWORD *Trace_Len,WORD *Index,WORD *Sub_Index);
 SMC_API short __stdcall nmcs_set_pdo_trace_trig_para(WORD ConnectNo,WORD Channel,WORD SlaveAddr,WORD Trig_Index,WORD Trig_Sub_Index,int Trig_Value,WORD Trig_Mode);
@@ -826,14 +826,14 @@ SMC_API short __stdcall nmcs_read_pdo_trace_data(WORD ConnectNo,WORD Channel,WOR
 SMC_API short __stdcall nmcs_get_pdo_trace_num(WORD ConnectNo,WORD Channel,WORD SlaveAddr,DWORD *Data_num, DWORD *Size_of_each_bag);
 SMC_API short __stdcall nmcs_get_pdo_trace_state(WORD ConnectNo,WORD Channel,WORD SlaveAddr,WORD *Trace_state);
 
-//×ÜÏß´íÎóÂë¶ÁÈ¡º¯Êı
+//æ€»çº¿é”™è¯¯ç è¯»å–å‡½æ•°
 SMC_API short __stdcall nmcs_get_current_fieldbus_state_info(WORD ConnectNo,WORD Channel,WORD *Axis,WORD *ErrorType,WORD *SlaveAddr,DWORD *ErrorFieldbusCode);
 SMC_API short __stdcall nmcs_get_detail_fieldbus_state_info(WORD ConnectNo,WORD Channel,DWORD ReadErrorNum,DWORD *TotalNum, DWORD *ActualNum, WORD *Axis,WORD *ErrorType,WORD *SlaveAddr,DWORD *ErrorFieldbusCode);
 SMC_API short __stdcall nmcs_set_error_checktimes(WORD ConnectNo,WORD channel,DWORD checktimes);
 SMC_API short __stdcall nmcs_get_error_checktimes(WORD ConnectNo,WORD channel,DWORD * checktimes);
 
 /*************************************** RTEX **************************************/
-//¸´Î»RTEXÖ÷Õ¾
+//å¤ä½RTEXä¸»ç«™
 SMC_API short __stdcall nmcs_reset_rtex(WORD ConnectNo);
 SMC_API short __stdcall nmcs_start_connect(WORD ConnectNo,WORD chan,WORD*info,WORD* len);
 SMC_API short __stdcall nmcs_get_vendor_info(WORD ConnectNo,WORD axis,char* info,WORD* len);
@@ -843,24 +843,24 @@ SMC_API short __stdcall nmcs_get_slave_version_info(WORD ConnectNo,WORD axis,cha
 
 SMC_API short __stdcall nmcs_write_parameter(WORD ConnectNo,WORD axis,WORD index, WORD subindex,DWORD para_data);
 /**************************************************************
-*¹¦ÄÜËµÃ÷£ºRTEXÇı¶¯Æ÷Ğ´EEPROM²Ù×÷
+*åŠŸèƒ½è¯´æ˜ï¼šRTEXé©±åŠ¨å™¨å†™EEPROMæ“ä½œ
 *
 *
 **************************************************************/
 SMC_API short __stdcall nmcs_write_slave_eeprom(WORD ConnectNo,WORD axis);
 /**************************************************************
-*index:rtexÇı¶¯Æ÷µÄ²ÎÊı·ÖÀà
-*subindex:rtexÇı¶¯Æ÷ÔÚindexÀà±ğÏÂµÄ²ÎÊı±àºÅ
-*para_data:¶Á³öµÄ²ÎÊıÖµ
+*index:rtexé©±åŠ¨å™¨çš„å‚æ•°åˆ†ç±»
+*subindex:rtexé©±åŠ¨å™¨åœ¨indexç±»åˆ«ä¸‹çš„å‚æ•°ç¼–å·
+*para_data:è¯»å‡ºçš„å‚æ•°å€¼
 **************************************************************/
 SMC_API short __stdcall nmcs_read_parameter(WORD ConnectNo,WORD axis,WORD index, WORD subindex,DWORD* para_data);
 /**************************************************************
-*index:rtexÇı¶¯Æ÷µÄ²ÎÊı·ÖÀà
-*subindex:rtexÇı¶¯Æ÷ÔÚindexÀà±ğÏÂµÄ²ÎÊı±àºÅ
-*para_data:¶Á³öµÄ²ÎÊıÖµ
+*index:rtexé©±åŠ¨å™¨çš„å‚æ•°åˆ†ç±»
+*subindex:rtexé©±åŠ¨å™¨åœ¨indexç±»åˆ«ä¸‹çš„å‚æ•°ç¼–å·
+*para_data:è¯»å‡ºçš„å‚æ•°å€¼
 **************************************************************/
 SMC_API short __stdcall nmcs_read_parameter_attributes(WORD ConnectNo,WORD axis,WORD index, WORD subindex,DWORD* para_data);
-//ÉèÖÃRTEX×ÜÏßÖÜÆÚ±È(us)
+//è®¾ç½®RTEXæ€»çº¿å‘¨æœŸæ¯”(us)
 SMC_API short __stdcall nmcs_set_cmdcycletime(WORD ConnectNo,WORD PortNum,DWORD cmdtime);
 SMC_API short __stdcall nmcs_get_cmdcycletime(WORD ConnectNo,WORD PortNum,DWORD* cmdtime);
 SMC_API short __stdcall nmcs_start_log(WORD ConnectNo,WORD chan,WORD node, WORD Ifenable);
@@ -870,14 +870,14 @@ SMC_API short __stdcall nmcs_get_log_state(WORD ConnectNo,WORD chan, DWORD* stat
 SMC_API short __stdcall nmcs_driver_reset(WORD ConnectNo,WORD axis);
 
 
-//µ×²ãÓÃ»§¿âÎÄ¼şµ÷ÓÃ
+//åº•å±‚ç”¨æˆ·åº“æ–‡ä»¶è°ƒç”¨
 SMC_API short __stdcall smc_userlib_loadlibrary(WORD ConnectNo,const char *pLibname);
 SMC_API short __stdcall smc_userlib_set_parameter(WORD ConnectNo, int type, const unsigned char *pParameter,int length);
 SMC_API short __stdcall smc_userlib_get_parameter(WORD ConnectNo, int type, unsigned char *pParameter,int length);
 
 
 
-//ÑùÌõÇúÏßÏà¹Ø ÈıÖáÒìĞÎ¼Ó¹¤Ôö¼Ó
+//æ ·æ¡æ›²çº¿ç›¸å…³ ä¸‰è½´å¼‚å½¢åŠ å·¥å¢åŠ 
 SMC_API short __stdcall smc_conti_smooth_contour_unit(WORD ConnectNo, WORD Crd, WORD AxisNum,WORD*AxisList, WORD point_num, double*x,double*y,double*z, double vel_coef, double eps,long mark);
 
 SMC_API short __stdcall smc_set_axis_follow_trajectory_displacement(WORD ConnectNo, WORD crd, WORD num, WORD* Axis_list);
@@ -896,22 +896,22 @@ SMC_API short __stdcall smc_set_normal_direction_control_enable(WORD ConnectNo, 
 SMC_API short __stdcall smc_get_normal_direction_control_enable(WORD ConnectNo, WORD crd, WORD* enable);
 SMC_API short __stdcall smc_get_conti_smooth_contour_curve(WORD point_num, double*x,double*y,double*z, double eps,double* curve_x,double* curve_y,double* curve_z, double* length);
 
-//»·ĞÎÎ»ÖÃÊ¹ÄÜ
+//ç¯å½¢ä½ç½®ä½¿èƒ½
 SMC_API short __stdcall smc_set_position_range_limit(WORD ConnectNo,WORD Axis,WORD enable);
 SMC_API short __stdcall smc_get_position_range_limit(WORD ConnectNo,WORD Axis,WORD * enable);
 
-//¿´ÃÅ¹·¹¦ÄÜ
+//çœ‹é—¨ç‹—åŠŸèƒ½
 #define WATCH_DOG_EVENT_PULSE_STOP 0x0001
 #define WATCH_DOG_EVENT_SERVO_OFF  0x0002
 #define WATCH_DOG_EVENT_IO_RESET   0x0004
 #define WATCH_DOG_EVENT_INTERRUPT  0x0080
-//¶ÔÓ¦¶à×éÖĞµÄindex=0
+//å¯¹åº”å¤šç»„ä¸­çš„index=0
 SMC_API short __stdcall smc_set_watchdog_action_event(WORD ConnectNo, WORD event_mask);
 SMC_API short __stdcall smc_get_watchdog_action_event(WORD ConnectNo, WORD* event_mask);
 SMC_API short __stdcall smc_set_watchdog_enable (WORD ConnectNo, double timer_period, WORD enable);
 SMC_API short __stdcall smc_get_watchdog_enable (WORD ConnectNo, double * timer_period, WORD* enable);
 SMC_API short __stdcall smc_reset_watchdog_timer (WORD ConnectNo);
-//¶à×é
+//å¤šç»„
 SMC_API short __stdcall smc_set_watchdog_action_event_extern(WORD ConnectNo, WORD index, WORD event_mask);
 SMC_API short __stdcall smc_get_watchdog_action_event_extern(WORD ConnectNo, WORD index, WORD* event_mask);
 SMC_API short __stdcall smc_set_watchdog_enable_extern(WORD ConnectNo, WORD index, double timer_period, WORD enable);

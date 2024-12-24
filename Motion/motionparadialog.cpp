@@ -1,4 +1,4 @@
-#include "motionparadialog.h"
+﻿#include "motionparadialog.h"
 
 MotionParaDialog::MotionParaDialog(QWidget *parent):QDialog(parent)
 {
@@ -33,9 +33,39 @@ MotionParaDialog::MotionParaDialog(QWidget *parent):QDialog(parent)
     flags |= Qt::MSWindowsFixedSizeDialogHint;
     setWindowFlags(flags);
     resize(1000,800);
+
+    connect(btnUpload,&QPushButton::clicked,this,&MotionParaDialog::btnUploadSlot);
+    connect(btnDownload,&QPushButton::clicked,this,&MotionParaDialog::btnDownloadSlot);
+    connect(btnImport,&QPushButton::clicked,this,&MotionParaDialog::btnImportSlot);
+    connect(btnExport,&QPushButton::clicked,this,&MotionParaDialog::btnExportSlot);
+
+    connect(this,&MotionParaDialog::uploadTab,axisTab,&AxisSettingTab::uploadslot);
+    connect(this,&MotionParaDialog::downloadTab,axisTab,&AxisSettingTab::downloadSlot);
+    connect(this,&MotionParaDialog::importTab,axisTab,&AxisSettingTab::importSlot);
+    connect(this,&MotionParaDialog::ExportTab,axisTab,&AxisSettingTab::exportSlot);
 }
 
 MotionParaDialog::~MotionParaDialog()
 {
 
+}
+
+void MotionParaDialog::btnUploadSlot()
+{
+    emit uploadTab();
+}
+
+void MotionParaDialog::btnDownloadSlot()
+{
+    emit downloadTab();
+}
+
+void MotionParaDialog::btnImportSlot()
+{
+    emit importTab();
+}
+
+void MotionParaDialog::btnExportSlot()
+{
+    emit ExportTab();
 }

@@ -1,4 +1,4 @@
-#ifndef AXISSETTINGTAB_H
+﻿#ifndef AXISSETTINGTAB_H
 #define AXISSETTINGTAB_H
 
 #include <QWidget>
@@ -20,6 +20,12 @@ public:
     void loadMockData();
 
 signals:
+
+public slots:
+    void uploadslot();
+    void downloadSlot();
+    void importSlot();
+    void exportSlot();
 
 private:
     QTableView *paraTableView;

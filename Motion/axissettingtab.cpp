@@ -1,7 +1,115 @@
-#include "axissettingtab.h"
+﻿#include "axissettingtab.h"
 #include "comboboxmotiondelegate.h"
 #include "inpudialogmotiondelegate.h"
 #include "inputdigitaldelegate.h"
+#include "basicsparameter.h"
+#include <LTSMC.h>
+#include <QDebug>
+
+//脉冲模式
+QMap<int,QString> plusMap ={
+    {0,"脉冲高+方向高"},
+    {1,"脉冲低+方向高"},
+    {2,"脉冲高+方向低"},
+    {3,"脉冲低+方向低"},
+    {4,"双脉冲高"},
+    {5,"双脉冲低"},
+    {6,"AB相"}
+};
+
+//回零模式
+QMap<int,QString> homeModeMap ={
+    {0,"一次回零"},
+    {1,"一次回零+反找"},
+    {2,"两次回零"},
+    {3,"一次回零+EZ"},
+    {4,"EZ回零"},
+    {5,"一次回零+反找EZ"},
+    {6,"原点锁存"},
+    {7,"原点+EZ所存"},
+    {8,"EZ所存"},
+    {9,"原点+反向EZ所存"}
+};
+
+//回零锁存源
+QMap<int,QString> homeSourceMap ={
+    {0,"指令位置"},
+    {1,"反馈位置"}
+};
+
+//回零方向
+QMap<int,QString> homeDirectMap = {
+    {0,"负方向"},
+    {1,"正方向"}
+};
+
+//有效电平
+QMap<int,QString> homeOrgLogicMap ={
+    {0,"低"},
+    {1,"高"}
+};
+
+//硬限位启用
+QMap<int,QString> hardElmodeMap ={
+    {0,"正负限位禁止"},
+    {1,"正负限位允许"},
+    {2,"正禁止，负允许"},
+    {3,"正允许，负禁止"}
+};
+
+//硬限位停止模式
+QMap<int,QString> hardStopModeMap ={
+    {0,"正负限位立即停止"},
+    {1,"正负限位减速"},
+    {2,"正立即，负减速"},
+    {3,"正减速，负立即"}
+};
+
+//硬限位有效电平
+QMap<int,QString> hardOrgLogicMap ={
+    {0,"正负限位低电平"},
+    {1,"正负限位高电平"},
+    {2,"正低，负高"},
+    {3,"正高，负低"}
+};
+
+//软限位启用
+QMap<int,QString> softElmodeMap ={
+    {0,"否"},
+    {1,"是"}
+};
+
+//软限位停止模式
+QMap<int,QString> softStopModeMap ={
+    {0,"立即停止"},
+    {1,"减速停止"}
+};
+
+//编码器模式
+QMap<int,QString> counterModeMap ={
+    {0,"非A/B相"},
+    {1,"A/B相1倍频"},
+    {2,"A/B相2倍频"},
+    {3,"A/B相4倍频"}
+};
+
+//编码器有效电平
+QMap<int,QString> counterOrgLogicMap ={
+    {0,"低"},
+    {1,"高"}
+};
+
+//映射IO类型，弹窗下拉框里不显示伺服准备和急停
+QMap<int,QString> ioTypeMap ={
+    {0,"正限位"},
+    {1,"负限位"},
+    {2,"原点"},
+    {3,"伺服报警"},
+    {4,"伺服准备"},
+    {5,"伺服到位"},
+    {6,"通用输入"},
+    {7,"急停"}
+};
 
 AxisSettingTab::AxisSettingTab(QWidget *parent)
     : QWidget{parent}
@@ -299,7 +407,7 @@ void AxisSettingTab::initTable()
         QStringList slowStr = {"是","否"};
         QString slowDefault = QString(tr("否"));
         ComboBoxMotionDelegate *slowDelegate = new ComboBoxMotionDelegate(slowStr,slowDefault,paraTable);
-        paraTable->setItemDelegateForRow(50,scramDelegate);
+        paraTable->setItemDelegateForRow(50,slowDelegate);
 
         QStringList slowLevelStr = {"高","低"};
         QString slowLevelDefault = QString(tr("低"));
@@ -309,8 +417,8 @@ void AxisSettingTab::initTable()
 
     //按钮弹窗委托 20 25 26 40 44 48 52
     {
-        QString tempStr("通用输入:0,滤波:0s");
-        paraTable->setItem(20,0,new QTableWidgetItem(tempStr));
+        // QString tempStr("通用输入:0,滤波:0s");
+        // paraTable->setItem(20,0,new QTableWidgetItem(tempStr));
 
         InpuDialogMotionDelegate *inputDailogDelegate = new InpuDialogMotionDelegate(paraTable);
         paraTable->setItemDelegateForRow(20,inputDailogDelegate);
@@ -492,10 +600,224 @@ void AxisSettingTab::loadMockData()
     QStringList slowStr = {"是","否"};
     QString slowDefault = QString(tr("否"));
     ComboBoxMotionDelegate *slowDelegate = new ComboBoxMotionDelegate(slowStr,slowDefault,paraTableView);
-    paraTableView->setItemDelegateForRow(41,scramDelegate);
+    paraTableView->setItemDelegateForRow(41,slowDelegate);
 
     QStringList slowLevelStr = {"高","低"};
     QString slowLevelDefault = QString(tr("低"));
     ComboBoxMotionDelegate *slowLevelDelegate = new ComboBoxMotionDelegate(slowLevelStr,slowLevelDefault,paraTableView);
     paraTableView->setItemDelegateForRow(42,slowLevelDelegate);
+}
+
+void AxisSettingTab::uploadslot()
+{
+    qDebug()<<QString("AxisSettingTab::uploadslot()");
+}
+
+void AxisSettingTab::downloadSlot()
+{
+    qDebug()<<QString("AxisSettingTab::downloadSlot()");
+    //_ConnectNo指定连接号的作用，以及什么时候发生变化？？？
+    unsigned short _ConnectNo = 0;
+
+    for (int i = 0; i < 6; ++i)
+    {
+        //基本设置
+        BasicsParameter basic;
+        //qDebug()<<basic.TdecStopTime;
+        smc_get_pulse_outmode(_ConnectNo, i,  &basic.PulseModel);
+        smc_get_equiv(_ConnectNo, i,  &basic.PulseEquiv);
+        smc_get_profile_unit(_ConnectNo, i, &basic.Min_Vel, &basic.Max_Vel, &basic.Tacc, &basic.Tdec, &basic.Stop_Vel);//获取基础参数
+        smc_get_s_profile(_ConnectNo, i, 0, &basic.S_para);
+        smc_get_backlash_unit(_ConnectNo, i, &basic.Backlash);
+        smc_get_dec_stop_time(_ConnectNo, i, &basic.TdecStopTime);
+        //qDebug()<<basic.TdecStopTime;
+
+        GoHomeParameter gohome;
+        smc_get_home_profile_unit(_ConnectNo,i,&gohome.Low_Vel,&gohome.High_Vel,&gohome.Tacc,&gohome.Tdec);
+        smc_get_homemode(_ConnectNo,i,&gohome.home_dir, &gohome.vel_mode,  &gohome.home_mode,  &gohome.pos_source);
+        smc_get_home_pin_logic(_ConnectNo,i,&gohome.org_logic, &gohome.filter);
+        smc_get_axis_io_map(_ConnectNo,i,gohome.SeifIOType,&gohome.MapIOType,&gohome.MapIOIndex,&gohome.Filter_time);
+        smc_get_home_position_unit(_ConnectNo,i,&gohome.Enable,&gohome.Position);
+        //qDebug()<<QString("axix=%1 pos_source=%2 home_dir=%3 ").arg(i).arg(gohome.pos_source).arg(gohome.home_dir);
+        //qDebug()<<QString("gohome  type=%1 index=%2 Filter_time=%3").arg(gohome.MapIOType).arg(gohome.MapIOIndex).arg(gohome.Filter_time);
+
+        HardLimitParameter harder;
+        smc_get_el_mode(_ConnectNo, i, &harder.El_enable, &harder.El_logic, &harder.El_mode);
+        smc_get_axis_io_map(_ConnectNo, i, harder.El_PlusSeifIOType, &harder.El_PlusMapIOType, &harder.El_PlusMapIOIndex, &harder.El_PlusFilter_time);
+        smc_get_axis_io_map(_ConnectNo, i, harder.El_MinusSeifIOType, &harder.El_MinusMapIOType, &harder.El_MinusMapIOIndex, &harder.El_MinusFilter_time);
+        //qDebug()<<QString("harder minus=%1 plus=%2").arg(harder.El_MinusSeifIOType).arg(harder.El_PlusMapIOType);
+
+        SoftLimitParameter soft;
+        smc_get_softlimit_unit(_ConnectNo, i, &soft.Enable, &soft.Source_sel, &soft.SL_action, &soft.N_limit, &soft.P_limit);
+
+        CounterInParameter couter;
+        //两个不需要显示的参数？？？
+        unsigned short ez_mode = 0;
+        double filter = 0;
+        smc_get_counter_inmode(_ConnectNo, i, &couter.Model);
+        smc_get_counter_reverse(_ConnectNo, i, &couter.Reverse);
+        smc_get_ez_mode(_ConnectNo, i, &couter.Ez_logic,&ez_mode,&filter);
+
+        //伺服报警和伺服到位？？？
+        ServoAlarmParameter servo;
+        smc_get_alm_mode(_ConnectNo, i, &servo.Enable, &servo.Alm_logic, &servo.Alm_action);
+        smc_get_axis_io_map(_ConnectNo, i, servo.SeifIOType, &servo.MapIOType, &servo.MapIOIndex, &servo.Filter_time);
+
+        EMGParameter emg;
+        smc_get_emg_mode(_ConnectNo, i, &emg.Enable, &emg. Emg_logic);
+        smc_get_axis_io_map(_ConnectNo, i, emg.SeifIOType, &emg.MapIOType, &emg.MapIOIndex, &emg.Filter_time);
+        //qDebug()<<QString("emg SeifIOType=%1 MapIOType=%2").arg(emg.SeifIOType).arg(emg.MapIOType);
+
+        DstpModelParameter dstp;
+        smc_get_io_dstp_mode(_ConnectNo, i, &dstp.Enable, &dstp.Dstp_logic);
+        smc_get_axis_io_map(_ConnectNo, i, dstp.SeifIOType, &dstp.MapIOType, &dstp.MapIOIndex, &dstp.Filter_time);
+        //qDebug()<<QString("dstp SeifIOType=%1 MapIOType=%2").arg(dstp.SeifIOType).arg(dstp.MapIOType);
+
+        paraTable->setItem(1,i,new QTableWidgetItem(plusMap[basic.PulseModel]));
+        paraTable->setItem(2,i,new QTableWidgetItem(QString::number(basic.PulseEquiv)));
+        paraTable->setItem(3,i,new QTableWidgetItem(QString::number(basic.Min_Vel)));
+        paraTable->setItem(4,i,new QTableWidgetItem(QString::number(basic.Max_Vel)));
+        paraTable->setItem(5,i,new QTableWidgetItem(QString::number(basic.Stop_Vel)));
+        paraTable->setItem(6,i,new QTableWidgetItem(QString::number(basic.Tacc)));
+        paraTable->setItem(7,i,new QTableWidgetItem(QString::number(basic.Tdec)));
+        paraTable->setItem(8,i,new QTableWidgetItem(QString::number(basic.S_para)));
+        paraTable->setItem(9,i,new QTableWidgetItem(QString::number(basic.Backlash)));
+        paraTable->setItem(10,i,new QTableWidgetItem(QString::number(basic.TdecStopTime)));
+
+        paraTable->setItem(12,i,new QTableWidgetItem(QString::number(gohome.Low_Vel)));
+        paraTable->setItem(13,i,new QTableWidgetItem(QString::number(gohome.High_Vel)));
+        paraTable->setItem(14,i,new QTableWidgetItem(QString::number(gohome.Tacc)));
+        paraTable->setItem(15,i,new QTableWidgetItem(QString::number(gohome.Tdec)));
+        //回零四个下拉框委托，一个弹窗
+        paraTable->setItem(16,i,new QTableWidgetItem(homeModeMap[gohome.home_mode]));
+        paraTable->setItem(17,i,new QTableWidgetItem(homeSourceMap[gohome.pos_source]));
+        paraTable->setItem(18,i,new QTableWidgetItem(homeDirectMap[gohome.home_dir]));
+        paraTable->setItem(19,i,new QTableWidgetItem(homeOrgLogicMap[gohome.org_logic]));
+        QString tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[gohome.MapIOType],QString::number(gohome.MapIOIndex),QString::number(gohome.Filter_time));
+        paraTable->setItem(20,i,new QTableWidgetItem(tempStr));
+        //硬限位三个下拉框，两个弹窗 22-26
+        paraTable->setItem(22,i,new QTableWidgetItem(hardElmodeMap[harder.El_enable]));
+        paraTable->setItem(23,i,new QTableWidgetItem(hardStopModeMap[harder.El_mode]));
+        paraTable->setItem(24,i,new QTableWidgetItem(hardOrgLogicMap[harder.El_logic]));
+        //正限位和负限位的字段待确认！！！
+        tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[harder.El_PlusMapIOType],QString::number(harder.El_PlusMapIOIndex),QString::number(harder.El_PlusFilter_time));
+        paraTable->setItem(25,i,new QTableWidgetItem(tempStr));
+        tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[harder.El_MinusMapIOType],QString::number(harder.El_MinusMapIOIndex),QString::number(harder.El_MinusFilter_time));
+        paraTable->setItem(26,i,new QTableWidgetItem(tempStr));
+        //软限位三个下拉框
+        paraTable->setItem(28,i,new QTableWidgetItem(softElmodeMap[soft.Enable]));
+        paraTable->setItem(29,i,new QTableWidgetItem(QString::number(soft.P_limit)));
+        paraTable->setItem(30,i,new QTableWidgetItem(QString::number(soft.N_limit)));
+        paraTable->setItem(31,i,new QTableWidgetItem(softStopModeMap[soft.SL_action]));
+        paraTable->setItem(32,i,new QTableWidgetItem(softElmodeMap[soft.Source_sel]));
+        //编码器三个下拉框委托 34-36
+        paraTable->setItem(34,i,new QTableWidgetItem(counterModeMap[couter.Model]));
+        paraTable->setItem(35,i,new QTableWidgetItem(softElmodeMap[couter.Reverse]));
+        paraTable->setItem(36,i,new QTableWidgetItem(counterOrgLogicMap[couter.Ez_logic]));
+        //伺服报警两国下拉框委托，一个弹窗 38-40
+        paraTable->setItem(38,i,new QTableWidgetItem(softElmodeMap[servo.Enable]));
+        paraTable->setItem(39,i,new QTableWidgetItem(counterOrgLogicMap[servo.Alm_logic]));
+        tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[servo.MapIOType],QString::number(servo.MapIOIndex),QString::number(servo.Filter_time));
+        paraTable->setItem(40,i,new QTableWidgetItem(tempStr));
+        //伺服到位字段不明确 42-44
+
+        //急停设置两个下拉框，一个弹窗   46-48
+        //Map中没有急停,文本框里硬加上去，弹窗里的下拉框不选择
+        paraTable->setItem(46,i,new QTableWidgetItem(softElmodeMap[emg.Enable]));
+        paraTable->setItem(47,i,new QTableWidgetItem(counterOrgLogicMap[emg.Emg_logic]));
+        tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[emg.MapIOType],QString::number(emg.MapIOIndex),QString::number(emg.Filter_time));
+        paraTable->setItem(48,i,new QTableWidgetItem(tempStr));
+        //减速停止设置两个下拉框，一个弹窗   50-52
+        paraTable->setItem(50,i,new QTableWidgetItem(softElmodeMap[dstp.Enable]));
+        paraTable->setItem(51,i,new QTableWidgetItem(counterOrgLogicMap[dstp.Dstp_logic]));
+        tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[dstp.MapIOType],QString::number(dstp.MapIOIndex),QString::number(dstp.Filter_time));
+        paraTable->setItem(52,i,new QTableWidgetItem(tempStr));
+    }
+
+}
+
+void AxisSettingTab::importSlot()
+{
+    qDebug()<<QString("AxisSettingTab::importSlot()");
+}
+
+void AxisSettingTab::exportSlot()
+{
+    qDebug()<<QString("AxisSettingTab::exportSlot()");
+    unsigned short _ConnectNo = 0;
+    QMap<int,QVariantMap> axisConfigs;
+    QString appPath = qApp->applicationDirPath();
+    QString configFileName = QDir(appPath).filePath("config.ini");
+    for (int i = 0; i < 6; ++i)
+    {
+        QVariantMap axis;
+
+        //基本设置
+        BasicsParameter basic;
+        smc_get_pulse_outmode(_ConnectNo, i,  &basic.PulseModel);
+        smc_get_equiv(_ConnectNo, i,  &basic.PulseEquiv);
+        smc_get_profile_unit(_ConnectNo, i, &basic.Min_Vel, &basic.Max_Vel, &basic.Tacc, &basic.Tdec, &basic.Stop_Vel);//获取基础参数
+        smc_get_s_profile(_ConnectNo, i, 0, &basic.S_para);
+        smc_get_backlash_unit(_ConnectNo, i, &basic.Backlash);
+        smc_get_dec_stop_time(_ConnectNo, i, &basic.TdecStopTime);
+
+        GoHomeParameter gohome;
+        smc_get_home_profile_unit(_ConnectNo,i,&gohome.Low_Vel,&gohome.High_Vel,&gohome.Tacc,&gohome.Tdec);
+        smc_get_homemode(_ConnectNo,i,&gohome.home_dir, &gohome.vel_mode,  &gohome.home_mode,  &gohome.pos_source);
+        smc_get_home_pin_logic(_ConnectNo,i,&gohome.org_logic, &gohome.filter);
+        smc_get_axis_io_map(_ConnectNo,i,gohome.SeifIOType,&gohome.MapIOType,&gohome.MapIOIndex,&gohome.Filter_time);
+        smc_get_home_position_unit(_ConnectNo,i,&gohome.Enable,&gohome.Position);
+
+        HardLimitParameter harder;
+        smc_get_el_mode(_ConnectNo, i, &harder.El_enable, &harder.El_logic, &harder.El_mode);
+        smc_get_axis_io_map(_ConnectNo, i, harder.El_PlusSeifIOType, &harder.El_PlusMapIOType, &harder.El_PlusMapIOIndex, &harder.El_PlusFilter_time);
+        smc_get_axis_io_map(_ConnectNo, i, harder.El_MinusSeifIOType, &harder.El_MinusMapIOType, &harder.El_MinusMapIOIndex, &harder.El_MinusFilter_time);
+
+        SoftLimitParameter soft;
+        smc_get_softlimit_unit(_ConnectNo, i, &soft.Enable, &soft.Source_sel, &soft.SL_action, &soft.N_limit, &soft.P_limit);
+
+        CounterInParameter couter;
+        unsigned short ez_mode = 0;
+        double filter = 0;
+        smc_get_counter_inmode(_ConnectNo, i, &couter.Model);
+        smc_get_counter_reverse(_ConnectNo, i, &couter.Reverse);
+        smc_get_ez_mode(_ConnectNo, i, &couter.Ez_logic,&ez_mode,&filter);
+
+        //伺服报警和伺服到位？？？
+        ServoAlarmParameter servo;
+        smc_get_alm_mode(_ConnectNo, i, &servo.Enable, &servo.Alm_logic, &servo.Alm_action);
+        smc_get_axis_io_map(_ConnectNo, i, servo.SeifIOType, &servo.MapIOType, &servo.MapIOIndex, &servo.Filter_time);
+
+        EMGParameter emg;
+        smc_get_emg_mode(_ConnectNo, i, &emg.Enable, &emg. Emg_logic);
+        smc_get_axis_io_map(_ConnectNo, i, emg.SeifIOType, &emg.MapIOType, &emg.MapIOIndex, &emg.Filter_time);
+
+        DstpModelParameter dstp;
+        smc_get_io_dstp_mode(_ConnectNo, i, &dstp.Enable, &dstp.Dstp_logic);
+        smc_get_axis_io_map(_ConnectNo, i, dstp.SeifIOType, &dstp.MapIOType, &dstp.MapIOIndex, &dstp.Filter_time);
+
+        axis.insert("PulseMode",basic.PulseModel);
+        axis.insert("PulseUnit",basic.PulseEquiv);
+        axis.insert("BackLash",basic.Backlash);
+
+        axisConfigs.insert(i,axis);
+    }
+    QSettings settings(configFileName,QSettings::IniFormat);
+    for (auto it = axisConfigs.constBegin(); it != axisConfigs.constEnd(); ++it)
+    {
+        QString section = QString("ParaAxis%1").arg(it.key());
+
+        // 设置当前段落
+        settings.beginGroup(section);
+
+        // 遍历该段落中的所有键值对并写入
+        for (auto fieldIt = it.value().constBegin(); fieldIt != it.value().constEnd(); ++fieldIt)
+        {
+            settings.setValue(fieldIt.key(), fieldIt.value());
+        }
+
+        // 结束当前段落的写入
+        settings.endGroup();
+    }
+
 }

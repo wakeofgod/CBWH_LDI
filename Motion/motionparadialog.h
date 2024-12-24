@@ -1,4 +1,4 @@
-#ifndef MOTIONPARADIALOG_H
+﻿#ifndef MOTIONPARADIALOG_H
 #define MOTIONPARADIALOG_H
 
 #include <QDialog>
@@ -11,9 +11,20 @@ class MotionParaDialog : public QDialog
 {
     Q_OBJECT
 public:
-   explicit MotionParaDialog(QWidget *parent = nullptr);
+    explicit MotionParaDialog(QWidget *parent = nullptr);
     ~MotionParaDialog();
 
+public slots:
+    void btnUploadSlot();
+    void btnDownloadSlot();
+    void btnImportSlot();
+    void btnExportSlot();
+
+signals:
+    void uploadTab();
+    void downloadTab();
+    void importTab();
+    void ExportTab();
 private:
     QPushButton *btnUpload;
     QPushButton *btnDownload;

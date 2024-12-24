@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QDebug>
 #include <LTSMC.h>
@@ -320,7 +320,7 @@ void MainWindow::motionSlot2()
     // motionInfoDialog = new MotionInfoDialog();
     // motionInfoDialog->show();
     //qDebug()<<QString("void MainWindow::motionSlot2");
-    QString ip = "192.168.0.5";
+    QString ip = "192.168.5.11";
     QByteArray qb = ip.toLocal8Bit();
     char* ip_char = qb.data();
     int ret = smc_board_init(0,2,ip_char,0);

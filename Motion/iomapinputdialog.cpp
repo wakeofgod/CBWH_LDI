@@ -1,4 +1,4 @@
-#include "iomapinputdialog.h"
+﻿#include "iomapinputdialog.h"
 
 IOMapInputDialog::IOMapInputDialog(QWidget *parent)
     :QDialog(parent),
@@ -12,6 +12,7 @@ IOMapInputDialog::IOMapInputDialog(QWidget *parent)
     btnCancle(new QPushButton(tr("取消"),this))
 {
     setWindowTitle(tr("轴IO映射"));
+    //下拉框和页面的map不完全一致
     comboType->addItems({"正限位","负限位","原点","伺服报警","伺服到位","通用输入"});
     for (int i = 0; i < 24; ++i)
     {
