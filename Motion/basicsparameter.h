@@ -32,11 +32,10 @@ public:
     unsigned short  MapIOType;//映射IO类型
     unsigned short  MapIOIndex;//映射IO索引
     double Filter_time;//IO信号滤波时间
-
     unsigned short  org_logic;//有效电平，0低，1高
-    double filter;//保留参数
-    unsigned short   Enable; //回零完成后设置偏移位置值
-    double Position;//设置回原点位置
+    double filter = 0;//保留参数,固定值，无法在界面上赋值取值
+    unsigned short   Enable = 0; //回零完成后设置偏移位置值
+    double Position = 0;//设置回原点位置
 };
 
 class HardLimitParameter

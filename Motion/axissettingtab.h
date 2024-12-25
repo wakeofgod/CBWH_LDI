@@ -19,6 +19,9 @@ public:
     //加载虚拟数据,待修改后删除
     void loadMockData();
 
+    int findMapKey(const QString &target,const QMap<int,QString> &map);
+
+    void splitStringList(unsigned short &ioType,unsigned short &ioIndex,double &filterTime,QString &str);
 signals:
 
 public slots:

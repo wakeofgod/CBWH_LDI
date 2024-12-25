@@ -5,7 +5,10 @@
 #include "basicsparameter.h"
 #include <LTSMC.h>
 #include <QDebug>
+#include <QRegularExpression>
 
+//_ConnectNo指定连接号的作用，以及什么时候发生变化？？？
+unsigned short _ConnectNo = 0;
 //脉冲模式
 QMap<int,QString> plusMap ={
     {0,"脉冲高+方向高"},
@@ -608,16 +611,230 @@ void AxisSettingTab::loadMockData()
     paraTableView->setItemDelegateForRow(42,slowLevelDelegate);
 }
 
+int AxisSettingTab::findMapKey(const QString &target, const QMap<int, QString> &map)
+{
+    for(QMap<int,QString>::const_iterator it = map.constBegin();it!= map.constEnd();++it)
+    {
+        if(it.value() == target)
+        {
+            return it.key();
+        }
+    }
+    return 0;
+}
+
+void AxisSettingTab::splitStringList(unsigned short &ioType, unsigned short &ioIndex, double &filterTime,QString &str)
+{
+    static QRegularExpression re("(\\S+):(\\d+)\\s*,\\S+:(\\d+)s?");
+    QRegularExpressionMatch match = re.match(str);
+    if(match.hasMatch())
+    {
+        QString typeStr = match.captured(1);
+        QString indexStr = match.captured(2);
+        QString timeStr = match.captured(3);
+        ioType = static_cast<unsigned short>(findMapKey(typeStr,ioTypeMap));
+        ioIndex = indexStr.toUShort();
+        filterTime = timeStr.toDouble();
+    }
+    else
+    {
+        qDebug()<<QString("拆分%1失败").arg(str);
+    }
+}
+
 void AxisSettingTab::uploadslot()
 {
     qDebug()<<QString("AxisSettingTab::uploadslot()");
+    for (int i = 0; i < 6; ++i)
+    {
+        //基本设置
+        QString pulseModelText = paraTable->item(1,i)->text();
+        //根据文本查找键
+        unsigned short PulseModel = static_cast<unsigned short>(findMapKey(pulseModelText,plusMap));
+        double PulseEquiv = paraTable->item(2,i)->text().toDouble();
+        double Min_Vel = paraTable->item(3,i)->text().toDouble();
+        double Max_Vel = paraTable->item(4,i)->text().toDouble();
+        double Stop_Vel = paraTable->item(5,i)->text().toDouble();
+        double Tacc = paraTable->item(6,i)->text().toDouble();
+        double Tdec = paraTable->item(7,i)->text().toDouble();
+        double S_para = paraTable->item(8,i)->text().toDouble();
+        double Backlash = paraTable->item(9,i)->text().toDouble();
+        double TdecStopTime = paraTable->item(10,i)->text().toDouble();
+
+        int st = smc_set_pulse_outmode(_ConnectNo, i, PulseModel);//设置脉冲模式
+        if (st != 0)
+            qDebug()<< "设置脉冲模式失败";
+        st = smc_set_equiv(_ConnectNo, i, PulseEquiv);//设置脉冲使能
+        if (st != 0)
+            qDebug()<<"设置脉冲使能失败";
+        st = smc_set_profile_unit(_ConnectNo, i, Min_Vel, Max_Vel, Tacc, Tdec, Stop_Vel);//设置基础参数
+        if (st != 0)
+            qDebug()<<"设置基础参数失败";
+        st = smc_set_s_profile(_ConnectNo, i, 0, S_para);//设置S段时间
+        if (st != 0)
+            qDebug()<<"设置S段时间失败";
+        st = smc_set_backlash_unit(_ConnectNo, i, Backlash);//设置反向间隙
+        if (st != 0)
+            qDebug()<<"设置反向间隙失败";
+        st = smc_set_dec_stop_time(_ConnectNo, i, TdecStopTime);//设置减速停止时间
+        if (st != 0)
+            qDebug()<<"设置减速停止时间失败";
+        char* burnsetBytes = QString("burnset").toUtf8().data();
+        char* spaceBytes = QString(" ").toUtf8().data();
+        st = smc_basic_command(_ConnectNo, burnsetBytes,spaceBytes, 0);//保存
+        if (st != 0)
+            qDebug()<<"保存失败";
+
+        //回零
+        double Low_Vel = paraTable->item(12,i)->text().toDouble();//回零低速
+        double High_Vel = paraTable->item(13,i)->text().toDouble();//回零高速
+        Tacc = paraTable->item(14,i)->text().toDouble();//加速时间
+        Tdec = paraTable->item(15,i)->text().toDouble();//减速时间
+        QString homeModeStr = paraTable->item(16,i)->text();
+        unsigned short  home_mode = static_cast<unsigned short>(findMapKey(homeModeStr,homeModeMap));// 回零模式
+        QString homeSourceStr = paraTable->item(17,i)->text();
+        unsigned short  pos_source = static_cast<unsigned short>(findMapKey(homeSourceStr,homeSourceMap));//回零方式，0：指令，1：反馈
+        QString homeDirStr = paraTable->item(18,i)->text();
+        unsigned short home_dir = static_cast<unsigned short>(findMapKey(homeDirStr,homeDirectMap));//回零方向
+        QString homeLogicStr = paraTable->item(19,i)->text();
+        unsigned short org_logic = static_cast<unsigned short>(findMapKey(homeLogicStr,homeOrgLogicMap));
+        QString homeMapStr = paraTable->item(20,i)->text();
+        unsigned short  MapIOType = 0;//映射IO类型
+        unsigned short  MapIOIndex = 0;//映射IO索引
+        double Filter_time = 0;//IO信号滤波时间
+        splitStringList(MapIOType,MapIOIndex,Filter_time,homeMapStr);
+
+        st = smc_set_home_profile_unit(_ConnectNo, i, Low_Vel, High_Vel, Tacc, Tdec);
+        if (st != 0) qDebug()<<"设置回零速度参数失败";
+        smc_set_homemode(_ConnectNo, i, home_dir, 1, home_mode, pos_source);
+        if (st != 0) qDebug()<<"设置回零模式失败";
+        smc_set_home_position_unit(_ConnectNo, i, 0, 0);
+        if (st != 0) qDebug()<<"设置回零偏置失败";
+        smc_set_home_pin_logic(_ConnectNo, i, org_logic, 0);
+        if (st != 0) qDebug()<<"设置 ORG 原点信号失败";
+        st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+        if (st != 0) qDebug()<<"保存回零失败";
+
+        //硬限位设置
+        QString elEnableStr = paraTable->item(22,i)->text();
+        unsigned short El_enable = static_cast<unsigned short>(findMapKey(elEnableStr,hardElmodeMap));//EL 信号使能状态
+        QString elModeStr = paraTable->item(23,i)->text();
+        unsigned short El_mode = static_cast<unsigned short>(findMapKey(elModeStr,hardStopModeMap));//EL 制动方式
+        QString elLogicStr = paraTable->item(24,i)->text();
+        unsigned short El_logic = static_cast<unsigned short>(findMapKey(elLogicStr,hardOrgLogicMap)) ;//EL 信号有效电平
+        QString hardPlusStr = paraTable->item(25,i)->text();
+        unsigned short El_PlusMapIOType = 0;//映射IO类型
+        unsigned short El_PlusMapIOIndex = 0;//映射IO索引
+        double El_PlusFilter_time = 0;//IO信号滤波时间
+        splitStringList(El_PlusMapIOType,El_PlusMapIOIndex,El_PlusFilter_time,hardPlusStr);
+        QString hardMinusStr = paraTable->item(26,i)->text();
+        unsigned short El_MinusMapIOType;//映射IO类型
+        unsigned short El_MinusMapIOIndex;//映射IO索引
+        double El_MinusFilter_time;//IO信号滤波时间
+        splitStringList(El_MinusMapIOType,El_MinusMapIOIndex,El_MinusFilter_time,hardMinusStr);
+
+        st = smc_set_el_mode(_ConnectNo, i, El_enable, El_logic, El_mode);
+        if (st != 0) qDebug()<<"设置EL信号报错";
+        st = smc_set_axis_io_map(_ConnectNo, i, 0, El_PlusMapIOType, El_PlusMapIOIndex, El_PlusFilter_time);
+        if (st != 0) qDebug()<<"设置正限位IO信号报错";
+        st = smc_set_axis_io_map(_ConnectNo, i, 1, El_MinusMapIOType, El_MinusMapIOIndex, El_MinusFilter_time);
+        if (st != 0) qDebug()<<"设置负限位IO信号报错";
+        st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+        if (st != 0) qDebug()<<"保存硬限位失败";
+
+        //软限位设置
+        QString softEnableStr = paraTable->item(28,i)->text();
+        unsigned short softEnable = static_cast<unsigned short>(findMapKey(softEnableStr,softElmodeMap));//使能状态
+        double P_limit = paraTable->item(29,i)->text().toDouble();//正限位脉冲数
+        double N_limit = paraTable->item(30,i)->text().toDouble();//负限位脉冲数
+        QString softStopStr = paraTable->item(31,i)->text();
+        unsigned short SL_action = static_cast<unsigned short>(findMapKey(softStopStr,softStopModeMap));//限位停止方式; 0：立即停止，1： 减速停止
+        QString softElModeStr = paraTable->item(32,i)->text();
+        unsigned short Source_sel = static_cast<unsigned short>(findMapKey(softElModeStr,softElmodeMap));//计数器选择
+        st = smc_get_softlimit_unit(_ConnectNo, i, &softEnable, &Source_sel, &SL_action, &N_limit, &P_limit);
+        if (st != 0) qDebug()<<"设置编码器参数失败";
+        st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+        if (st != 0) qDebug()<<"保存软限位失败";
+
+        //编码器设置
+        QString counterModeStr = paraTable->item(34,i)->text();
+        unsigned short counterMode = static_cast<unsigned short>(findMapKey(counterModeStr,counterModeMap));//编码器模式
+        QString counterReverseStr = paraTable->item(35,i)->text();
+        unsigned short counterReverse = static_cast<unsigned short>(findMapKey(counterReverseStr,softElmodeMap));//输入脉冲反转
+        QString counterLogicStr = paraTable->item(36,i)->text();
+        unsigned short counterlogic = static_cast<unsigned short>(findMapKey(counterLogicStr,hardOrgLogicMap));//EZ电平有效
+        //两个保留参数，固定值
+        unsigned short ez_mode = 0;
+        double filter = 0;
+        st = smc_set_counter_inmode(_ConnectNo, i,counterMode);
+        if (st != 0) qDebug()<<"设置编码器模式报错";
+        st = smc_set_counter_reverse(_ConnectNo, i, counterReverse);
+        if (st != 0) qDebug()<<"设置编码器脉冲反转报错";
+        st = smc_set_ez_mode(_ConnectNo, i, counterlogic, ez_mode, filter);
+        if (st != 0) qDebug()<<"设置EZ电平报错";
+        st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+        if (st != 0) qDebug()<<"保存编码器失败";
+
+        //伺服报警
+        QString servoEnableStr = paraTable->item(38,i)->text();
+        unsigned short servoEnable = static_cast<unsigned short>(findMapKey(servoEnableStr,softElmodeMap));//ALM 信号使能状态
+        QString servoLogicStr = paraTable->item(39,i)->text();
+        unsigned short servologic = static_cast<unsigned short>(findMapKey(servoLogicStr,homeOrgLogicMap)); // ALM 信号有效电平
+        QString servoMapStr = paraTable->item(40,i)->text();
+        unsigned short servoMapIOType = 0;//映射ALM-IO类型
+        unsigned short servoMapIOIndex = 0;//映射ALM-IO索引
+        double servoFilter_time = 0;//ALM-IO信号滤波时间
+        splitStringList(servoMapIOType,servoMapIOIndex,servoFilter_time,servoMapStr);
+        //最后一个参数alm_actionALM信号的制动方式只有一个值0
+        st = smc_set_alm_mode( _ConnectNo,i,servoEnable,servologic,0);
+        if (st != 0) qDebug()<<"设置伺服器报警失败";
+        st = smc_set_axis_io_map( _ConnectNo,i,5,servoMapIOType,servoMapIOIndex,servoFilter_time);
+        if (st != 0) qDebug()<<"设置伺服器报警io失败";
+        st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+        if (st != 0) qDebug()<<"保存失败";
+
+        //伺服到位
+
+        //急停
+        QString emgEnableStr = paraTable->item(46,i)->text();
+        unsigned short emgEnable = static_cast<unsigned short>(findMapKey(emgEnableStr,softElmodeMap)); //使能状态
+        QString emgLogicStr = paraTable->item(47,i)->text();
+        unsigned short emgLogic =static_cast<unsigned short>(findMapKey(emgLogicStr,homeOrgLogicMap)); //有效电平
+        QString emgMapStr = paraTable->item(48,i)->text();
+        unsigned short emgMapIOType = 0;//映射EMG-IO类型
+        unsigned short emgMapIOIndex = 0;//映射EMG-IO索引
+        double emgFilter_time = 0;//EMG-IO信号滤波时间
+        splitStringList(emgMapIOType,emgMapIOIndex,emgFilter_time,emgMapStr);
+        st = smc_set_emg_mode(_ConnectNo,i,emgEnable,emgLogic);
+        if (st != 0) qDebug()<<"设置急停失败";
+        st = smc_set_axis_io_map( _ConnectNo,i,3,emgMapIOType,emgMapIOIndex,emgFilter_time);
+        if (st != 0) qDebug()<<"设置急停Io失败";
+        st = smc_basic_command(_ConnectNo,burnsetBytes,spaceBytes, 0);//保存
+        if (st != 0) qDebug()<<"保存急停失败";
+
+        //减速停止
+        QString dstpEnableStr = paraTable->item(50,i)->text();
+        unsigned short dstpEnable = static_cast<unsigned short>(findMapKey(dstpEnableStr,softElmodeMap)); //使能状态
+        QString dstpLogicStr = paraTable->item(51,i)->text();
+        unsigned short dstpLogic = static_cast<unsigned short>(findMapKey(dstpLogicStr,homeOrgLogicMap));
+        QString dstpMapStr = paraTable->item(52,i)->text();
+        unsigned short dstpMapIOType = 0;//映射DstpModel-IO类型
+        unsigned short dstpMapIOIndex = 0;//映射DstpModel-IO索引
+        double dstpFilter_time = 0;//DstpModel-IO信号滤波时间
+        splitStringList(dstpMapIOType,dstpMapIOIndex,dstpFilter_time,dstpMapStr);
+        st = smc_set_io_dstp_mode(_ConnectNo, i, dstpEnable, dstpLogic);
+        if (st != 0) qDebug()<<"设置减速停止参数失败";
+        st = smc_set_axis_io_map(_ConnectNo, i, 4, MapIOType, MapIOIndex, Filter_time);
+        if (st != 0) qDebug()<<"设置减速停止IO参数失败";
+        st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+        if (st != 0) qDebug()<<"保存减速失败";
+    }
+
 }
 
 void AxisSettingTab::downloadSlot()
 {
     qDebug()<<QString("AxisSettingTab::downloadSlot()");
-    //_ConnectNo指定连接号的作用，以及什么时候发生变化？？？
-    unsigned short _ConnectNo = 0;
 
     for (int i = 0; i < 6; ++i)
     {
