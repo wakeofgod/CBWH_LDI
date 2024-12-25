@@ -1016,6 +1016,77 @@ void AxisSettingTab::exportSlot()
         axis.insert("PulseMode",basic.PulseModel);
         axis.insert("PulseUnit",basic.PulseEquiv);
         axis.insert("BackLash",basic.Backlash);
+        axis.insert("EncoderCountMode",0);//未知字段，设置0
+        axis.insert("EncoderCountReverse",0);//未知字段，设置0
+        axis.insert("StartVel",basic.Min_Vel);
+        axis.insert("RunVel",basic.Max_Vel);
+        axis.insert("StopVel",basic.Stop_Vel);
+        axis.insert("Tacc",basic.Tacc);
+        axis.insert("Tdec",basic.Tdec);
+        axis.insert("Tspara",basic.S_para);
+        axis.insert("PlanMode",0);//未知字段，设置0
+
+        axis.insert("HomeVelLow",gohome.Low_Vel);
+        axis.insert("HomeVelHigh",gohome.High_Vel);
+        axis.insert("HomeTacc",gohome.Tacc);
+        axis.insert("HomeMode",gohome.home_mode);
+        axis.insert("HomeDir",gohome.home_dir);
+        axis.insert("HomeHighValid",gohome.org_logic);
+        axis.insert("HomeFinishMode",1);//未知字段，设置1
+        axis.insert("HomeOffsetPos",1);
+        axis.insert("HomingLatchSrc",gohome.pos_source);
+
+        axis.insert("EzHighValid",0);//未知字段，设置0
+        axis.insert("SlValid",soft.Enable);
+        axis.insert("SlSource",soft.Source_sel);
+        axis.insert("SlStopMode",soft.SL_action);
+        axis.insert("SlPlimitValue",soft.P_limit);
+        axis.insert("SlNlimitValue",soft.N_limit);
+
+        axis.insert("ElValid",harder.El_enable);
+        axis.insert("ElStopMode",harder.El_mode);
+        axis.insert("ElHighValid",harder.El_logic);
+
+        axis.insert("EMGValid",emg.Enable);
+        axis.insert("EMGHighValid",emg.Emg_logic);
+
+        axis.insert("AlmValid",servo.Enable);
+        axis.insert("AlmHighValid",servo.Alm_logic);
+
+        axis.insert("InpValid",0);//未知字段，设置0
+        axis.insert("InpHighValid",0);//未知字段，设置0
+
+        axis.insert("DstpValid",dstp.Enable);
+        axis.insert("DstpHighValid",dstp.Dstp_logic);
+        axis.insert("DstpTime",0.1);//未知字段，设置0.1
+
+        axis.insert("PelMsgMapIoType",harder.El_PlusMapIOType);
+        axis.insert("PelMsgMapIoIndex",harder.El_PlusMapIOIndex);
+        axis.insert("PelMsgMapIoFilter",harder.El_PlusFilter_time);
+        axis.insert("NelMsgMapIoType",harder.El_MinusMapIOType);
+        axis.insert("NelMsgMapIoIndex",harder.El_MinusMapIOIndex);
+        axis.insert("NelMsgMapIoFilter",harder.El_MinusFilter_time);
+
+        axis.insert("OrgMsgMapIoType",gohome.MapIOType);
+        axis.insert("OrgMsgMapIoIndex",gohome.MapIOIndex);
+        axis.insert("OrgMsgMapIoFilter",gohome.Filter_time);
+
+        axis.insert("EmgMsgMapIoType",emg.MapIOType);
+        axis.insert("EmgMsgMapIoIndex",emg.MapIOIndex);
+        axis.insert("EmgMsgMapIoFilter",emg.Filter_time);
+
+        axis.insert("DstpMsgMapIoType",dstp.MapIOType);
+        axis.insert("DstpMsgMapIoIndex",dstp.MapIOIndex);
+        axis.insert("DstpMsgMapIoFilter",dstp.Filter_time);
+
+        axis.insert("AlmMsgMapIoType",servo.MapIOType);
+        axis.insert("AlmMsgMapIoIndex",servo.MapIOIndex);
+        axis.insert("AlmMsgMapIoFilter",servo.Filter_time);
+
+        //伺服到位,暂时空缺，设默认值
+        axis.insert("InpMsgMapIoType",5);
+        axis.insert("InpMsgMapIoIndex",i);
+        axis.insert("InpMsgMapIoFilter",0.000);
 
         axisConfigs.insert(i,axis);
     }
