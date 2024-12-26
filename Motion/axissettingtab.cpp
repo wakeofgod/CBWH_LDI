@@ -8,9 +8,12 @@
 #include <QRegularExpression>
 #include <QFile>
 #include <QDir>
+#include <QString>
 
 //_ConnectNo指定连接号的作用，以及什么时候发生变化？？？
 unsigned short _ConnectNo = 0;
+char* burnsetBytes = QString("burnset").toUtf8().data();
+char* spaceBytes = QString(" ").toUtf8().data();
 //脉冲模式
 QMap<int,QString> plusMap ={
     {0,"脉冲高+方向高"},
@@ -958,6 +961,260 @@ void AxisSettingTab::downloadSlot()
 void AxisSettingTab::importSlot()
 {
     qDebug()<<QString("AxisSettingTab::importSlot()");
+    QString defaultPath = QDir::currentPath();
+    QString fileName = QFileDialog::getOpenFileName(nullptr, "选择文件", defaultPath, "配置文件 (*.cfg)");
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qWarning() << "Unable to open file";
+        return;
+    }
+    QTextStream in(&file);
+    int currentAxis = -1;
+    //while循环不能分段，待修改，先写好取值的部分
+    while (!in.atEnd())
+    {
+        QString line = in.readLine().trimmed();
+        unsigned short PulseModel = 0,HomeMode = 0,HomeDir = 0,HomeOrgLogic = 0,HomePosSource = 0,HomeMapIOType = 0,HomeMapIOIndex = 0;
+        double PulseEquiv = 0,Min_Vel = 0,Max_Vel = 0,Tacc = 0,Tdec = 0,Stop_Vel = 0,S_para = 0,Backlash = 0,TdecStopTime = 0;
+        double Low_Vel = 0,High_Vel = 0,HomeTacc = 0,HomeTdec = 0,HomeFilterTime = 0;
+        unsigned short SoftEnable = 0,SoftSource = 0,SoftMode = 0;
+        double SoftPlimit = 0,SoftNlimit = 0;
+        unsigned short ElEnable = 0,ElLogic = 0,ElMode = 0,ElPlusMapIOType = 0,ElPlusMapIOIndex = 0,ElMinusMapIOType = 0,ElMinusMapIOIndex = 0;
+        double ElPlusFilterTime = 0,ElMinusFilterTime = 0;
+        unsigned short EmgEnable = 0,EmgLogic = 0,EmgMapIOType = 0,EmgMapIOIndex = 0;
+        double EmgFilterTime = 0,ServoFilterTime = 0,DstpFilterTime = 0;
+        unsigned short ServoEnable = 0,ServoAlmLogic = 0,ServoMapIOType = 0,ServoMapIOIndex = 0;
+        unsigned short DstpEnable = 0,DstpLogic = 0,DstpMapIOType = 0,DstpMapIOIndex = 0;
+        QString tempStr;
+        if(line.startsWith("[ParaAxis"))
+        {
+            bool ok;
+            currentAxis = line.mid(9,line.indexOf(']')-9).toInt(&ok);
+            if(!ok)
+            {
+                qDebug()<<"Invalid axis index:"<<line;
+            }
+            //qDebug()<<"currentAxis"<<currentAxis;
+        }
+        else if(line.contains("="))
+        {
+            QStringList parts = line.split("=");
+            QString key = parts[0].trimmed();
+            QString value = parts[1].trimmed();
+            {
+                if(key == "PulseMode")  {PulseModel = value.toUShort();}
+                if(key == "PulseUnit")PulseEquiv = value.toDouble();
+                if(key == "BackLash")   Backlash = value.toDouble();
+                if(key == "StartVel")   Min_Vel = value.toDouble();
+                if(key == "RunVel")   Max_Vel = value.toDouble();
+                if(key == "StopVel")   Stop_Vel = value.toDouble();
+                if(key == "Tacc")   Tacc = value.toDouble();
+                if(key == "Tdec")   Tdec = value.toDouble();
+                if(key == "Tspara")   S_para = value.toDouble();
+            }
+
+            {
+                if(key == "HomeVelLow")   Low_Vel = value.toDouble();
+                if(key == "HomeVelHigh")   High_Vel = value.toDouble();
+                if(key == "HomeTacc")   HomeTacc = value.toDouble();
+                if(key == "HomeMode")   HomeMode = value.toDouble();
+                if(key == "HomeDir")    HomeDir = value.toUShort();
+                if(key == "HomeHighValid")   HomeOrgLogic = value.toUShort();
+                if(key == "HomingLatchSrc")   HomePosSource = value.toUShort();
+                if(key == "OrgMsgMapIoType")   HomeMapIOType = value.toUShort();
+                if(key == "OrgMsgMapIoIndex")   HomeMapIOIndex = value.toUShort();
+                if(key == "OrgMsgMapIoFilter")   HomeFilterTime = value.toDouble();
+            }
+
+            {
+                if(key == "ElValid")   ElEnable = value.toUShort();
+                if(key == "ElStopMode")   ElMode = value.toUShort();
+                if(key == "ElHighValid")   ElLogic = value.toUShort();
+                if(key == "PelMsgMapIoType")   ElPlusMapIOType = value.toUShort();
+                if(key == "PelMsgMapIoIndex")   ElPlusMapIOIndex = value.toUShort();
+                if(key == "PelMsgMapIoFilter")   ElPlusFilterTime = value.toUShort();
+                if(key == "NelMsgMapIoType")   ElMinusMapIOType = value.toUShort();
+                if(key == "NelMsgMapIoIndex")   ElMinusMapIOIndex = value.toUShort();
+                if(key == "NelMsgMapIoFilter")   ElMinusFilterTime = value.toDouble();
+            }
+
+            {
+                if(key == "SlValid")   SoftEnable = value.toUShort();
+                if(key == "SlSource")   SoftSource = value.toUShort();
+                if(key == "SlStopMode")   SoftMode = value.toUShort();
+                if(key == "SlPlimitValue")   SoftPlimit = value.toDouble();
+                if(key == "SlNlimitValue")   SoftNlimit = value.toDouble();
+            }
+
+            {
+                if(key == "AlmValid")   ServoEnable = value.toUShort();
+                if(key == "AlmHighValid")   ServoAlmLogic = value.toUShort();
+                if(key == "AlmMsgMapIoType")   ServoMapIOType = value.toUShort();
+                if(key == "AlmMsgMapIoIndex")   ServoMapIOIndex = value.toUShort();
+                if(key == "AlmMsgMapIoFilter")   ServoFilterTime = value.toDouble();
+            }
+
+            {
+                if(key == "EMGValid")   EmgEnable = value.toUShort();
+                if(key == "EMGHighValid")   EmgLogic = value.toUShort();
+                if(key == "EmgMsgMapIoType")   EmgMapIOType = value.toUShort();
+                if(key == "EmgMsgMapIoIndex")   EmgMapIOIndex = value.toUShort();
+                if(key == "EmgMsgMapIoFilter")   EmgFilterTime = value.toDouble();
+            }
+
+            {
+                if(key == "DstpValid")   DstpEnable = value.toUShort();
+                if(key == "DstpHighValid")   DstpLogic = value.toUShort();
+                if(key == "DstpMsgMapIoType")   DstpMapIOType = value.toUShort();
+                if(key == "DstpMsgMapIoIndex")   DstpMapIOIndex = value.toUShort();
+                if(key == "DstpMsgMapIoFilter")   DstpFilterTime = value.toDouble();
+            }
+
+            //更新设置
+            int st = 0;
+            {
+                st = smc_set_pulse_outmode(_ConnectNo, currentAxis, PulseModel);
+                if (st != 0)    qDebug()<< "设置脉冲模式失败";
+                st = smc_set_equiv(_ConnectNo, currentAxis, PulseEquiv);
+                if (st != 0)    qDebug()<<"设置脉冲使能失败";
+                st = smc_set_profile_unit(_ConnectNo, currentAxis, Min_Vel, Max_Vel, Tacc, Tdec, Stop_Vel);
+                if (st != 0)     qDebug()<<"设置基础参数失败";
+                st = smc_set_s_profile(_ConnectNo, currentAxis, 0, S_para);//设置S段时间
+                if (st != 0)    qDebug()<<"设置S段时间失败";
+                st = smc_set_backlash_unit(_ConnectNo, currentAxis, Backlash);//设置反向间隙
+                if (st != 0)    qDebug()<<"设置反向间隙失败";
+                st = smc_set_dec_stop_time(_ConnectNo, currentAxis, TdecStopTime);//设置减速停止时间
+                if (st != 0)    qDebug()<<"设置减速停止时间失败";
+                st = smc_basic_command(_ConnectNo, burnsetBytes,spaceBytes, 0);//保存
+                if (st != 0)    qDebug()<<"保存基本设置失败";
+            }
+
+            {
+                st = smc_set_home_profile_unit(_ConnectNo, currentAxis, Low_Vel, High_Vel, HomeTacc, HomeTdec);
+                if (st != 0) qDebug()<<"设置回零速度参数失败";
+                smc_set_homemode(_ConnectNo, currentAxis, HomeDir, 1, HomeMode, HomePosSource);
+                if (st != 0) qDebug()<<"设置回零模式失败";
+                smc_set_home_position_unit(_ConnectNo, currentAxis, 0, 0);
+                if (st != 0) qDebug()<<"设置回零偏置失败";
+                smc_set_home_pin_logic(_ConnectNo, currentAxis, HomeOrgLogic, 0);
+                if (st != 0) qDebug()<<"设置 ORG 原点信号失败";
+                st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);
+                if (st != 0) qDebug()<<"保存回零失败";
+            }
+
+            {
+                st = smc_set_el_mode(_ConnectNo, currentAxis, ElEnable, ElLogic, ElMode);
+                if (st != 0) qDebug()<<"设置EL信号报错";
+                st = smc_set_axis_io_map(_ConnectNo, currentAxis, 0, ElPlusMapIOType, ElPlusMapIOIndex, ElPlusFilterTime);
+                if (st != 0) qDebug()<<"设置正限位IO信号报错";
+                st = smc_set_axis_io_map(_ConnectNo, currentAxis, 1, ElMinusMapIOType, ElMinusMapIOIndex, ElMinusFilterTime);
+                if (st != 0) qDebug()<<"设置负限位IO信号报错";
+                st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+                if (st != 0) qDebug()<<"保存硬限位失败";
+            }
+
+            {
+                st = smc_get_softlimit_unit(_ConnectNo, currentAxis, &SoftEnable, &SoftSource, &SoftMode, &SoftNlimit, &SoftPlimit);
+                if (st != 0) qDebug()<<"设置编码器参数失败";
+                st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);
+                if (st != 0) qDebug()<<"保存软限位失败";
+            }
+
+            {
+                st = smc_set_alm_mode( _ConnectNo,currentAxis,ServoEnable,ServoAlmLogic,0);
+                if (st != 0) qDebug()<<"设置伺服器报警失败";
+                st = smc_set_axis_io_map( _ConnectNo,currentAxis,5,ServoMapIOType,ServoMapIOIndex,ServoFilterTime);
+                if (st != 0) qDebug()<<"设置伺服器报警io失败";
+                st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+                if (st != 0) qDebug()<<"保存失败";
+            }
+
+            {
+                st = smc_set_emg_mode(_ConnectNo,currentAxis,EmgEnable,EmgLogic);
+                if (st != 0) qDebug()<<"设置急停失败";
+                st = smc_set_axis_io_map( _ConnectNo,currentAxis,3,EmgMapIOType,EmgMapIOIndex,EmgFilterTime);
+                if (st != 0) qDebug()<<"设置急停Io失败";
+                st = smc_basic_command(_ConnectNo,burnsetBytes,spaceBytes, 0);//保存
+                if (st != 0) qDebug()<<"保存急停失败";
+            }
+
+            {
+                st = smc_set_io_dstp_mode(_ConnectNo, currentAxis, DstpEnable, DstpLogic);
+                if (st != 0) qDebug()<<"设置减速停止参数失败";
+                st = smc_set_axis_io_map(_ConnectNo, currentAxis, 4, DstpMapIOType, DstpMapIOIndex, DstpFilterTime);
+                if (st != 0) qDebug()<<"设置减速停止IO参数失败";
+                st = smc_basic_command(_ConnectNo, burnsetBytes, spaceBytes, 0);//保存
+                if (st != 0) qDebug()<<"保存减速失败";
+            }
+
+            //更新页面
+            {
+                paraTable->setItem(1,currentAxis,new QTableWidgetItem(plusMap[PulseModel]));
+                paraTable->setItem(2,currentAxis,new QTableWidgetItem(QString::number(PulseEquiv)));
+                paraTable->setItem(3,currentAxis,new QTableWidgetItem(QString::number(Min_Vel)));
+                paraTable->setItem(4,currentAxis,new QTableWidgetItem(QString::number(Max_Vel)));
+                paraTable->setItem(5,currentAxis,new QTableWidgetItem(QString::number(Stop_Vel)));
+                paraTable->setItem(6,currentAxis,new QTableWidgetItem(QString::number(Tacc)));
+                paraTable->setItem(7,currentAxis,new QTableWidgetItem(QString::number(Tdec)));
+                paraTable->setItem(8,currentAxis,new QTableWidgetItem(QString::number(S_para)));
+                paraTable->setItem(9,currentAxis,new QTableWidgetItem(QString::number(Backlash)));
+                paraTable->setItem(10,currentAxis,new QTableWidgetItem(QString::number(Stop_Vel)));
+            }
+
+            {
+                paraTable->setItem(12,currentAxis,new QTableWidgetItem(QString::number(Low_Vel)));
+                paraTable->setItem(13,currentAxis,new QTableWidgetItem(QString::number(High_Vel)));
+                paraTable->setItem(14,currentAxis,new QTableWidgetItem(QString::number(HomeTacc)));
+                paraTable->setItem(15,currentAxis,new QTableWidgetItem(QString::number(HomeTdec)));
+                paraTable->setItem(16,currentAxis,new QTableWidgetItem(homeModeMap[HomeMode]));
+                paraTable->setItem(17,currentAxis,new QTableWidgetItem(homeSourceMap[HomePosSource]));
+                paraTable->setItem(18,currentAxis,new QTableWidgetItem(homeDirectMap[HomeDir]));
+                paraTable->setItem(19,currentAxis,new QTableWidgetItem(homeOrgLogicMap[HomeOrgLogic]));
+                tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[HomeMapIOType],QString::number(HomeMapIOIndex),QString::number(HomeFilterTime));
+                paraTable->setItem(20,currentAxis,new QTableWidgetItem(tempStr));
+            }
+
+            {
+                paraTable->setItem(22,currentAxis,new QTableWidgetItem(hardElmodeMap[ElEnable]));
+                paraTable->setItem(23,currentAxis,new QTableWidgetItem(hardStopModeMap[ElMode]));
+                paraTable->setItem(24,currentAxis,new QTableWidgetItem(hardOrgLogicMap[ElLogic]));
+                tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[ElPlusMapIOType],QString::number(ElPlusMapIOIndex),QString::number(ElPlusFilterTime));
+                paraTable->setItem(25,currentAxis,new QTableWidgetItem(tempStr));
+                tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[ElMinusMapIOType],QString::number(ElMinusMapIOIndex),QString::number(ElMinusFilterTime));
+                paraTable->setItem(26,currentAxis,new QTableWidgetItem(tempStr));
+            }
+
+            {
+                paraTable->setItem(28,currentAxis,new QTableWidgetItem(softElmodeMap[SoftEnable]));
+                paraTable->setItem(29,currentAxis,new QTableWidgetItem(QString::number(SoftPlimit)));
+                paraTable->setItem(30,currentAxis,new QTableWidgetItem(QString::number(SoftNlimit)));
+                paraTable->setItem(31,currentAxis,new QTableWidgetItem(softStopModeMap[SoftMode]));
+                paraTable->setItem(32,currentAxis,new QTableWidgetItem(softElmodeMap[SoftSource]));
+            }
+
+            {
+                paraTable->setItem(38,currentAxis,new QTableWidgetItem(softElmodeMap[ServoEnable]));
+                paraTable->setItem(39,currentAxis,new QTableWidgetItem(counterOrgLogicMap[ServoAlmLogic]));
+                tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[ServoMapIOType],QString::number(ServoMapIOIndex),QString::number(ServoFilterTime));
+                paraTable->setItem(40,currentAxis,new QTableWidgetItem(tempStr));
+            }
+
+            {
+                paraTable->setItem(46,currentAxis,new QTableWidgetItem(softElmodeMap[EmgEnable]));
+                paraTable->setItem(47,currentAxis,new QTableWidgetItem(counterOrgLogicMap[EmgLogic]));
+                tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[EmgMapIOType],QString::number(EmgMapIOIndex),QString::number(EmgFilterTime));
+                paraTable->setItem(48,currentAxis,new QTableWidgetItem(tempStr));
+            }
+
+            {
+                paraTable->setItem(50,currentAxis,new QTableWidgetItem(softElmodeMap[DstpEnable]));
+                paraTable->setItem(51,currentAxis,new QTableWidgetItem(counterOrgLogicMap[DstpLogic]));
+                tempStr = QString("%1:%2,滤波:%3s").arg(ioTypeMap[DstpMapIOType],QString::number(DstpMapIOIndex),QString::number(DstpFilterTime));
+                paraTable->setItem(52,currentAxis,new QTableWidgetItem(tempStr));
+            }
+        }
+    }
 }
 
 void AxisSettingTab::exportSlot()
