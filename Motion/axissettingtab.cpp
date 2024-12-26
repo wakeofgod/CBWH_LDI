@@ -6,6 +6,8 @@
 #include <LTSMC.h>
 #include <QDebug>
 #include <QRegularExpression>
+#include <QFile>
+#include <QDir>
 
 //_ConnectNo指定连接号的作用，以及什么时候发生变化？？？
 unsigned short _ConnectNo = 0;
@@ -962,13 +964,18 @@ void AxisSettingTab::exportSlot()
 {
     qDebug()<<QString("AxisSettingTab::exportSlot()");
     unsigned short _ConnectNo = 0;
-    QMap<int,QVariantMap> axisConfigs;
     QString appPath = qApp->applicationDirPath();
-    QString configFileName = QDir(appPath).filePath("config.ini");
+    QString configFileName = QDir(appPath).filePath("config.cfg");
+    QFile file(configFileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Failed to open file!";
+        return;
+    }
+    QTextStream out(&file);
+
     for (int i = 0; i < 6; ++i)
     {
-        QVariantMap axis;
-
         //基本设置
         BasicsParameter basic;
         smc_get_pulse_outmode(_ConnectNo, i,  &basic.PulseModel);
@@ -1013,99 +1020,83 @@ void AxisSettingTab::exportSlot()
         smc_get_io_dstp_mode(_ConnectNo, i, &dstp.Enable, &dstp.Dstp_logic);
         smc_get_axis_io_map(_ConnectNo, i, dstp.SeifIOType, &dstp.MapIOType, &dstp.MapIOIndex, &dstp.Filter_time);
 
-        axis.insert("PulseMode",basic.PulseModel);
-        axis.insert("PulseUnit",basic.PulseEquiv);
-        axis.insert("BackLash",basic.Backlash);
-        axis.insert("EncoderCountMode",0);//未知字段，设置0
-        axis.insert("EncoderCountReverse",0);//未知字段，设置0
-        axis.insert("StartVel",basic.Min_Vel);
-        axis.insert("RunVel",basic.Max_Vel);
-        axis.insert("StopVel",basic.Stop_Vel);
-        axis.insert("Tacc",basic.Tacc);
-        axis.insert("Tdec",basic.Tdec);
-        axis.insert("Tspara",basic.S_para);
-        axis.insert("PlanMode",0);//未知字段，设置0
+        out << "[" << QString("ParaAxis%1").arg(i) << "]\n";  // 每个轴的段落名
+        out <<"PulseMode="<<basic.PulseModel<<"\n";
+        out <<"PulseUnit="<<basic.PulseEquiv<<"\n";
+        out <<"BackLash="<<basic.Backlash<<"\n";
+        out <<"EncoderCountMode="<<0<<"\n";//未知字段，设置0
+        out <<"EncoderCountReverse="<<0<<"\n";//未知字段，设置0
+        out <<"StartVel="<<basic.Min_Vel<<"\n";
+        out <<"RunVel="<<basic.Max_Vel<<"\n";
+        out <<"StopVel="<<basic.Stop_Vel<<"\n";
+        out <<"Tacc="<<basic.Tacc<<"\n";
+        out <<"Tdec="<<basic.Tdec<<"\n";
+        out <<"Tspara="<<basic.S_para<<"\n";
+        out <<"PlanMode="<<0<<"\n";//未知字段，设置0
 
-        axis.insert("HomeVelLow",gohome.Low_Vel);
-        axis.insert("HomeVelHigh",gohome.High_Vel);
-        axis.insert("HomeTacc",gohome.Tacc);
-        axis.insert("HomeMode",gohome.home_mode);
-        axis.insert("HomeDir",gohome.home_dir);
-        axis.insert("HomeHighValid",gohome.org_logic);
-        axis.insert("HomeFinishMode",1);//未知字段，设置1
-        axis.insert("HomeOffsetPos",1);
-        axis.insert("HomingLatchSrc",gohome.pos_source);
+        out <<"HomeVelLow="<<gohome.Low_Vel<<"\n";
+        out <<"HomeVelHigh="<<gohome.High_Vel<<"\n";
+        out <<"HomeTacc="<<gohome.Tacc<<"\n";
+        out <<"HomeMode="<<gohome.home_mode<<"\n";
+        out <<"HomeDir="<<gohome.home_dir<<"\n";
+        out <<"HomeHighValid="<<gohome.org_logic<<"\n";
+        out <<"HomeFinishMode="<<1<<"\n";//未知字段，设置1
+        out <<"HomeOffsetPos="<<1<<"\n";
+        out <<"HomingLatchSrc="<<gohome.pos_source<<"\n";
 
-        axis.insert("EzHighValid",0);//未知字段，设置0
-        axis.insert("SlValid",soft.Enable);
-        axis.insert("SlSource",soft.Source_sel);
-        axis.insert("SlStopMode",soft.SL_action);
-        axis.insert("SlPlimitValue",soft.P_limit);
-        axis.insert("SlNlimitValue",soft.N_limit);
+        out <<"EzHighValid="<<0<<"\n";//未知字段，设置0
+        out <<"SlValid="<<soft.Enable<<"\n";
+        out <<"SlSource="<<soft.Source_sel<<"\n";
+        out <<"SlStopMode="<<soft.SL_action<<"\n";
+        out <<"SlPlimitValue="<<soft.P_limit<<"\n";
+        out <<"SlNlimitValue="<<soft.N_limit<<"\n";
 
-        axis.insert("ElValid",harder.El_enable);
-        axis.insert("ElStopMode",harder.El_mode);
-        axis.insert("ElHighValid",harder.El_logic);
+        out <<"ElValid="<<harder.El_enable<<"\n";
+        out <<"ElStopMode="<<harder.El_mode<<"\n";
+        out <<"ElHighValid="<<harder.El_logic<<"\n";
 
-        axis.insert("EMGValid",emg.Enable);
-        axis.insert("EMGHighValid",emg.Emg_logic);
+        out <<"EMGValid="<<emg.Enable<<"\n";
+        out <<"EMGHighValid="<<emg.Emg_logic<<"\n";
 
-        axis.insert("AlmValid",servo.Enable);
-        axis.insert("AlmHighValid",servo.Alm_logic);
+        out <<"AlmValid="<<servo.Enable<<"\n";
+        out <<"AlmHighValid="<<servo.Alm_logic<<"\n";
 
-        axis.insert("InpValid",0);//未知字段，设置0
-        axis.insert("InpHighValid",0);//未知字段，设置0
+        out <<"InpValid="<<0<<"\n";//未知字段，设置0
+        out <<"InpHighValid="<<0<<"\n";//未知字段，设置0
 
-        axis.insert("DstpValid",dstp.Enable);
-        axis.insert("DstpHighValid",dstp.Dstp_logic);
-        axis.insert("DstpTime",0.1);//未知字段，设置0.1
+        out <<"DstpValid="<<dstp.Enable<<"\n";
+        out <<"DstpHighValid="<<dstp.Dstp_logic<<"\n";
+        out <<"DstpTime="<<0.1<<"\n";//未知字段，设置0.1
 
-        axis.insert("PelMsgMapIoType",harder.El_PlusMapIOType);
-        axis.insert("PelMsgMapIoIndex",harder.El_PlusMapIOIndex);
-        axis.insert("PelMsgMapIoFilter",harder.El_PlusFilter_time);
-        axis.insert("NelMsgMapIoType",harder.El_MinusMapIOType);
-        axis.insert("NelMsgMapIoIndex",harder.El_MinusMapIOIndex);
-        axis.insert("NelMsgMapIoFilter",harder.El_MinusFilter_time);
+        out <<"PelMsgMapIoType="<<harder.El_PlusMapIOType<<"\n";
+        out <<"PelMsgMapIoIndex="<<harder.El_PlusMapIOIndex<<"\n";
+        out <<"PelMsgMapIoFilter="<<harder.El_PlusFilter_time<<"\n";
+        out <<"NelMsgMapIoType="<<harder.El_MinusMapIOType<<"\n";
+        out <<"NelMsgMapIoIndex="<<harder.El_MinusMapIOIndex<<"\n";
+        out <<"NelMsgMapIoFilter="<<harder.El_MinusFilter_time<<"\n";
 
-        axis.insert("OrgMsgMapIoType",gohome.MapIOType);
-        axis.insert("OrgMsgMapIoIndex",gohome.MapIOIndex);
-        axis.insert("OrgMsgMapIoFilter",gohome.Filter_time);
+        out <<"OrgMsgMapIoType="<<gohome.MapIOType<<"\n";
+        out <<"OrgMsgMapIoIndex="<<gohome.MapIOIndex<<"\n";
+        out <<"OrgMsgMapIoFilter="<<gohome.Filter_time<<"\n";
 
-        axis.insert("EmgMsgMapIoType",emg.MapIOType);
-        axis.insert("EmgMsgMapIoIndex",emg.MapIOIndex);
-        axis.insert("EmgMsgMapIoFilter",emg.Filter_time);
+        out <<"EmgMsgMapIoType="<<emg.MapIOType<<"\n";
+        out <<"EmgMsgMapIoIndex="<<emg.MapIOIndex<<"\n";
+        out <<"EmgMsgMapIoFilter="<<emg.Filter_time<<"\n";
 
-        axis.insert("DstpMsgMapIoType",dstp.MapIOType);
-        axis.insert("DstpMsgMapIoIndex",dstp.MapIOIndex);
-        axis.insert("DstpMsgMapIoFilter",dstp.Filter_time);
+        out <<"DstpMsgMapIoType="<<dstp.MapIOType<<"\n";
+        out <<"DstpMsgMapIoIndex="<<dstp.MapIOIndex<<"\n";
+        out <<"DstpMsgMapIoFilter="<<dstp.Filter_time<<"\n";
 
-        axis.insert("AlmMsgMapIoType",servo.MapIOType);
-        axis.insert("AlmMsgMapIoIndex",servo.MapIOIndex);
-        axis.insert("AlmMsgMapIoFilter",servo.Filter_time);
+        out <<"AlmMsgMapIoType="<<servo.MapIOType<<"\n";
+        out <<"AlmMsgMapIoIndex="<<servo.MapIOIndex<<"\n";
+        out <<"AlmMsgMapIoFilter="<<servo.Filter_time<<"\n";
 
         //伺服到位,暂时空缺，设默认值
-        axis.insert("InpMsgMapIoType",5);
-        axis.insert("InpMsgMapIoIndex",i);
-        axis.insert("InpMsgMapIoFilter",0.000);
+        out <<"InpMsgMapIoType="<<5<<"\n";
+        out <<"InpMsgMapIoIndex="<<i<<"\n";
+        out <<"InpMsgMapIoFilter="<<0.000<<"\n";
 
-        axisConfigs.insert(i,axis);
     }
-    QSettings settings(configFileName,QSettings::IniFormat);
-    for (auto it = axisConfigs.constBegin(); it != axisConfigs.constEnd(); ++it)
-    {
-        QString section = QString("ParaAxis%1").arg(it.key());
-
-        // 设置当前段落
-        settings.beginGroup(section);
-
-        // 遍历该段落中的所有键值对并写入
-        for (auto fieldIt = it.value().constBegin(); fieldIt != it.value().constEnd(); ++fieldIt)
-        {
-            settings.setValue(fieldIt.key(), fieldIt.value());
-        }
-
-        // 结束当前段落的写入
-        settings.endGroup();
-    }
-
+    file.close();
+    qDebug()<<"export finish";
 }
