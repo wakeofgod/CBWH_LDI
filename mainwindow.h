@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -13,11 +13,13 @@
 #include <QToolBar>
 #include <QLabel>
 #include <QRadioButton>
+#include <QTimer>
 #include "filecommanddialog.h"
 #include "camerasettingdialog.h"
 #include "motionparadialog.h"
 #include "motioninfodialog.h"
 #include "motionconnecdialog.h"
+#include "frmmessagebox.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -36,8 +38,15 @@ public:
     void initWidgets();
     void createMenu();
     void createCameraWidget();
+    void createMotionEnable();
     void createMotionControl();
+    void setSpeed(int aix,QDoubleSpinBox* lineedit);
+    int Getlinkstatus();
+    int getAixposition(int aixnum , double* x);
 
+    QTimer *connectionCheckerTimer;
+    FrmMessageBox *msgBox;
+public slots:
     void fileActionSlot1();
     void fileActionSlot2();
     void fileActionSlot3();
@@ -49,6 +58,24 @@ public:
     void motionSlot1();
     void motionSlot2();
     void motionSlot3();
+
+    void btnConnectSlot();
+    void btnDisconnectSlot();
+    void btnFullOpenSlot();
+    void btnFullCloseSlot();
+
+    void moveContinueSlot();
+    void moveStopSlot();
+    void moveRelaAndabsSlot();
+    void axisStopSlot();
+    void axisHomeSlot();
+    void checkConnection();
+    void checkEnableXSlot();
+    void checkEnableYSlot();
+    void checkEnableZSlot();
+    void checkEnableRSlot();
+    void checkEnableC1Slot();
+    void checkEnableC2Slot();
 
 private:
     Ui::MainWindow *ui;
@@ -87,6 +114,29 @@ private:
     MotionInfoDialog *motionInfoDialog;
     MotionConnecDialog *motionConnectDialog;
 
+    //使能
+    QGroupBox *enableGroup;
+    QLabel *lblIPAddress;
+    QLineEdit *txtIPAddress;
+    QPushButton *btnConnect;
+    QRadioButton *radioState;
+    QPushButton *btnDisconnect;
+    QLabel *lblEnableX;
+    QLabel *lblEnableY;
+    QLabel *lblEnableZ;
+    QLabel *lblEnableR;
+    QLabel *lblEnableC1;
+    QLabel *lblEnableC2;
+    QCheckBox *cbxEnableX;
+    QCheckBox *cbxEnableY;
+    QCheckBox *cbxEnableZ;
+    QCheckBox *cbxEnableR;
+    QCheckBox *cbxEnableC1;
+    QCheckBox *cbxEnableC2;
+    QPushButton *btnFullOpen;
+    QPushButton *btnFullClose;
+
+    //运动
     QGroupBox *motionGroup;
     QLabel *lblAxis;
     QLabel *lblCoordinate;
@@ -99,60 +149,60 @@ private:
     QRadioButton *radioAbsolute;
 
     QLabel *lblXAxis;
-    QLineEdit *txtXCoordinate;
+    QDoubleSpinBox *txtXCoordinate;
     QLineEdit *txtXState;
-    QLineEdit *txtXMovePosition;
-    QLineEdit *txtXSpeed;
+    QDoubleSpinBox *txtXMovePosition;
+    QDoubleSpinBox *txtXSpeed;
     QPushButton *btnXObverse;
     QPushButton *btnXReverse;
     QPushButton *btnXZero;
     QPushButton *btnXStop;
 
     QLabel *lblYAxis;
-    QLineEdit *txtYCoordinate;
+    QDoubleSpinBox *txtYCoordinate;
     QLineEdit *txtYState;
-    QLineEdit *txtYMovePosition;
-    QLineEdit *txtYSpeed;
+    QDoubleSpinBox *txtYMovePosition;
+    QDoubleSpinBox *txtYSpeed;
     QPushButton *btnYObverse;
     QPushButton *btnYReverse;
     QPushButton *btnYZero;
     QPushButton *btnYStop;
 
     QLabel *lblZAxis;
-    QLineEdit *txtZCoordinate;
+    QDoubleSpinBox *txtZCoordinate;
     QLineEdit *txtZState;
-    QLineEdit *txtZMovePosition;
-    QLineEdit *txtZSpeed;
+    QDoubleSpinBox *txtZMovePosition;
+    QDoubleSpinBox *txtZSpeed;
     QPushButton *btnZObverse;
     QPushButton *btnZReverse;
     QPushButton *btnZZero;
     QPushButton *btnZStop;
 
     QLabel *lblRAxis;
-    QLineEdit *txtRCoordinate;
+    QDoubleSpinBox *txtRCoordinate;
     QLineEdit *txtRState;
-    QLineEdit *txtRMovePosition;
-    QLineEdit *txtRSpeed;
+    QDoubleSpinBox *txtRMovePosition;
+    QDoubleSpinBox *txtRSpeed;
     QPushButton *btnRObverse;
     QPushButton *btnRReverse;
     QPushButton *btnRZero;
     QPushButton *btnRStop;
 
     QLabel *lblC1Axis;
-    QLineEdit *txtC1Coordinate;
+    QDoubleSpinBox *txtC1Coordinate;
     QLineEdit *txtC1State;
-    QLineEdit *txtC1MovePosition;
-    QLineEdit *txtC1Speed;
+    QDoubleSpinBox *txtC1MovePosition;
+    QDoubleSpinBox *txtC1Speed;
     QPushButton *btnC1Obverse;
     QPushButton *btnC1Reverse;
     QPushButton *btnC1Zero;
     QPushButton *btnC1Stop;
 
     QLabel *lblC2Axis;
-    QLineEdit *txtC2Coordinate;
+    QDoubleSpinBox *txtC2Coordinate;
     QLineEdit *txtC2State;
-    QLineEdit *txtC2MovePosition;
-    QLineEdit *txtC2Speed;
+    QDoubleSpinBox *txtC2MovePosition;
+    QDoubleSpinBox *txtC2Speed;
     QPushButton *btnC2Obverse;
     QPushButton *btnC2Reverse;
     QPushButton *btnC2Zero;
