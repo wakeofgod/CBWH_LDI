@@ -106,4 +106,20 @@ public:
     double Filter_time;//DstpModel-IO信号滤波时间
 };
 
+class AxisData
+{
+public:
+    unsigned short PulseModel = 0,HomeMode = 0,HomeDir = 0,HomeOrgLogic = 0,HomePosSource = 0,HomeMapIOType = 0,HomeMapIOIndex = 0;
+    double PulseEquiv = 0,Min_Vel = 0,Max_Vel = 0,Tacc = 0,Tdec = 0,Stop_Vel = 0,S_para = 0,Backlash = 0,TdecStopTime = 0;
+    double Low_Vel = 0,High_Vel = 0,HomeTacc = 0,HomeTdec = 0,HomeFilterTime = 0;
+    unsigned short SoftEnable = 0,SoftSource = 0,SoftMode = 0;
+    double SoftPlimit = 0,SoftNlimit = 0;
+    unsigned short ElEnable = 0,ElLogic = 0,ElMode = 0,ElPlusMapIOType = 0,ElPlusMapIOIndex = 0,ElMinusMapIOType = 0,ElMinusMapIOIndex = 0;
+    double ElPlusFilterTime = 0,ElMinusFilterTime = 0;
+    unsigned short EmgEnable = 0,EmgLogic = 0,EmgMapIOType = 0,EmgMapIOIndex = 0;
+    double EmgFilterTime = 0,ServoFilterTime = 0,DstpFilterTime = 0;
+    unsigned short ServoEnable = 0,ServoAlmLogic = 0,ServoMapIOType = 0,ServoMapIOIndex = 0;
+    unsigned short DstpEnable = 0,DstpLogic = 0,DstpMapIOType = 0,DstpMapIOIndex = 0;
+};
+
 #endif // BASICSPARAMETER_H

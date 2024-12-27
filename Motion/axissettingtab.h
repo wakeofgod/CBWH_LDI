@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QtWidgets>
 #include <QHeaderView>
+#include "basicsparameter.h"
 
 class AxisSettingTab : public QWidget
 {
@@ -12,16 +13,14 @@ public:
     explicit AxisSettingTab(QWidget *parent = nullptr);
 
     void initView();
-
     //要添加合并单元格，分段，该用qtablewidget
     void initTable();
-
     //加载虚拟数据,待修改后删除
     void loadMockData();
-
     int findMapKey(const QString &target,const QMap<int,QString> &map);
-
     void splitStringList(unsigned short &ioType,unsigned short &ioIndex,double &filterTime,QString &str);
+    void processAxisData(int &currentAxis,AxisData &currentData);
+
 signals:
 
 public slots:
